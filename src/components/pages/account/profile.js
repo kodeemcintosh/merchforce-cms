@@ -1,10 +1,10 @@
 
 import React from 'react';
 
-export function Login() {
+export function Profile() {
 
   return(
-    <div className="login">
+    <div className="profile">
     </div>
   );
 }

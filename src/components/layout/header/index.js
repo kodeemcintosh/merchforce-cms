@@ -1,5 +1,7 @@
 
 import React from 'react';
+import { Links } from 'react-router';
+
 import { Logo } from './logo';
 import { CartMenu } from './cart-menu';
 import { AccountMenu } from './account-menu';
