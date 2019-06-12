@@ -1,7 +1,7 @@
 
 import React, { useState } from 'react';
 import { Link, Redirect } from 'react-router';
-import { useStore } from '../../store';
+import { useStore } from '../../hooks/useStore';
 import axios from 'axios';
 
 export function Login() {
@@ -27,7 +27,7 @@ export function Login() {
     setIsLoading(false);
 
     if(response.status === 200) {
-      await sessionStorage.setItem('user', response.user);
+      await sessionStorage.setItem('tkn', response.headers.tkn);
       setStore((prevStore) => ({ ...prevStore, user: response.user}));
 
       setRedirectToHome(true);
@@ -57,7 +57,7 @@ export function Login() {
     <div className="login">
       <form onSubmit={handleLogin}>
         <input placeholder="email" value={emailInput} onChange={handleEmailInput}></input>
-        <input placeholder="password" value={passwordInput} onChange={handlePasswordInput}></input>
+        <input type="password" placeholder="password" value={passwordInput} onChange={handlePasswordInput}></input>
         <button onClick={handleLogin}>Login</button>
       </form>
       <Link to="/register">register</Link>

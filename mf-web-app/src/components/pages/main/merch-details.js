@@ -1,7 +1,7 @@
 
 import React from 'react';
-import useModal from '../../hooks';
-import ImageViewer from '../shared';
+import useModal from '../../../hooks';
+import ImageViewer from '../../shared';
 
 export function MerchDetails() {
   const { modalStatus, toggleModal } = useModal();
