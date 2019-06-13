@@ -4,58 +4,60 @@ import { Link, Redirect } from 'react-router';
 import { useStore } from '../../hooks/useStore';
 import axios from 'axios';
 
-export function Login() {
+export function Login({ authorize }) {
   const [ store, setStore ] = useStore();
   const [ emailInput, setEmailInput ] = useState('');
   const [ passwordInput, setPasswordInput ] = useState('');
   const [ isLoading, setIsLoading ] = useState(false);
-  const [ redirectToHome, setRedirectToHome ] = useState(false);
-  const [ redirectToUnautherized, setRedirectToUnautherized ] = useState(false);
+  const [ isInvalidLogin, setIsInvalidLogin ] = useState(false);
 
   const handleEmailInput = (e) => setEmailInput(e.target.value)
   const handlePasswordInput = (e) => setPasswordInput(e.target.value);
 
   const handleLogin = async () => {
-    setIsLoading(true);
+    try {
+      setIsLoading(true);
 
-    const payload = {
-      email: emailInput,
-      password: passwordInput
+      const payload = {
+        email: emailInput,
+        password: passwordInput
+      }
+
+      let response = await axios.post('/login', payload);
+      response = JSON.parse(respone);
+
+      if(response.status === 200) {
+        authorize();
+
+        let user = response.user;
+        user.role = response.headers.role;
+
+        await sessionStorage.setItem('tkn', response.headers.tkn);
+        setStore((prevStore) => ({ ...prevStore, user }));
+
+        setIsLoading(false);
+        setRedirectToHome(true);
+      }
+
+      setIsInvalidLogin(true);
+    } catch(err) {
+      console.warn(err);
     }
-
-    let response = await axios.post('/login', payload);
-    setIsLoading(false);
-
-    if(response.status === 200) {
-      await sessionStorage.setItem('tkn', response.headers.tkn);
-      setStore((prevStore) => ({ ...prevStore, user: response.user}));
-
-      setRedirectToHome(true);
-    } else {
-      setRedirectToUnautherized(true);
-    }
-  }
-
-  if(redirectToHome) {
-    return (
-      <Redirect to="/home" />
-    )
-  }
-
-  if(redirectToUnautherized) {
-    return (
-      <Redirect to="/unautherized" />
-    )
   }
 
   if(isLoading) {
-    <div>LOADING SCREEN</div>
+    return (
+      <div className="login">
+        <div>LOADING SCREEN</div>
+      </div>
+    );
   }
 
 
   return(
     <div className="login">
       <form onSubmit={handleLogin}>
+        {isInvalidLogin ? <label>Username or password is invalid</label> : null}
         <input placeholder="email" value={emailInput} onChange={handleEmailInput}></input>
         <input type="password" placeholder="password" value={passwordInput} onChange={handlePasswordInput}></input>
         <button onClick={handleLogin}>Login</button>

@@ -11,18 +11,18 @@ import (
 	"time"
 
 	"golang.org/x/crypto/acme/autocert"
-	"github.com/kvmac/merchforce-cms/mf-framework/router"
-	"github.com/kvmac/merchforce-cms/mf-framework/middleware"
+	"github.com/kvmac/merchforce-cms/mf-auth/router"
+	// "github.com/kvmac/merchforce-cms/mf-framework/middleware"
 )
 // https://github.com/kjk/go-cookbook/blob/master/free-ssl-certificates/main.go
 
 const (
 	htmlIndex = `<html><body>Welcome!</body></html>`
-	httpPort  = "localhost:8080"
+	httpPort  = "127.0.0.1:8080"
 )
 var (
 	flagProduction = false
-	redirectHttpToTls	= true
+	redirectHttpToTls	= false
 )
 
 func main() {
@@ -33,7 +33,7 @@ func main() {
 	if flagProduction {
 		hostPolicy := func(ctx context.Context, host string) error {
 			// Note: change to your real host
-			allowedHost := "www.mydomain.com"
+			allowedHost := "www.ts-app.kvmac.com"
 			if host == allowedHost {
 				return nil
 			}
@@ -84,8 +84,8 @@ func main() {
 
 
 func parseFlags() {
-	flag.BoolVar(&flagProduction, "production", false, "if true, we start HTTPS server")
-	flag.BoolVar(&redirectHttpToTls, "redirect-to-https", false, "if true, we redirect HTTP to HTTPS")
+	flag.BoolVar(&flagProduction, "prod", false, "if true, we start HTTPS server")
+	flag.BoolVar(&redirectHttpToTls, "redirect", false, "if true, we redirect HTTP to HTTPS")
 	flag.Parse()
 }
 

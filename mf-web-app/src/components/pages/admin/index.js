@@ -1,10 +1,10 @@
 
 import React from 'react';
 
-export function Main() {
+export function Admin() {
 
   return(
-    <div className="main">
+    <div className="admin">
     </div>
   );
 }

@@ -1,6 +1,6 @@
-package data
+// package data
 
-import (
-	'database/sql'
-	_ 'psql'
-)
+// import (
+// 	'database/sql'
+// 	_ 'psql'
+// )
