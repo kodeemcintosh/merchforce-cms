@@ -14,3 +14,5 @@ type Route struct {
 
 //Routes because Route objects have to go somewhere
 type Routes []Route
+
+type SubRoutes 

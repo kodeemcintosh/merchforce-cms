@@ -29,10 +29,6 @@ func Login(w http.ResponseWriter, req *http.Request) {
 		w.WriteHeader(http.StatusBadRequest)
 		return
 	}
-	creds.Password.HashAndSalt()
-
-	// remove this once you know what user1 password hash is
-	fmt.Sprintf("Password Hash is:  %s", creds.Password)
 
 	// Create the JWT string
 	tknStr, err := business.Login(creds)
