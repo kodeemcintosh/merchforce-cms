@@ -1,40 +1,39 @@
 package main
 
 import (
-	"context"
-	"crypto/tls"
+	// "context"
+	// "crypto/tls"
 	"flag"
-	"fmt"
+	"os"
+	// "fmt"
 	// "io"
-	"log"
+	// "log"
 	"net/http"
-	"time"
-	"golang.org/x/crypto/acme/autocert"
+	// "time"
+
+	"github.com/kvmac/merchforce-cms/mf-auth/models"
+	"github.com/kvmac/merchforce-cms/mf-auth/router"
 )
 // https://github.com/kjk/go-cookbook/blob/master/free-ssl-certificates/main.go
 
 var (
 	flagProduction = false
 	redirectHttpToTls	= false
-
-	m *autocert.Manager
 )
 
 
-type TlsServer *http.Server
-type HttpServer *http.Server
-
 func main() {
+	os.Setenv("JWT_KEY", "secret_key")
 	flag.BoolVar(&flagProduction, "prod", false, "if true, we start HTTPS server")
 	flag.BoolVar(&redirectHttpToTls, "redirect", false, "if true, we redirect HTTP to HTTPS")
 	flag.Parse()
 
-	var tlsServer TlsServer
+	var tlsServer models.TlsServer
 	if flagProduction {
 		tlsServer.Serve()
 	}
 
-	var httpServer HttpServer
+	var httpServer models.HttpServer
 	httpServer.Serve()
 
 
@@ -42,3 +41,5 @@ func main() {
 	ServeAuth()
 
 }
+
+

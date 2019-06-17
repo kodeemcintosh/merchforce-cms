@@ -1,8 +1,12 @@
-package main
+package router
 
 import (
+	// "net/http"
+
 	"github.com/gorilla/mux"
-	"net/http"
+
+	"github.com/kvmac/merchforce-cms/mf-auth/handlers"
+	"github.com/kvmac/merchforce-cms/mf-auth/middleware"
 )
 
 //Router is the big, bad router that gets called in the main function to do the heavy lifting
@@ -13,17 +17,17 @@ func Router() *mux.Router {
 
 	r.
 		Name("Login").
-		HandleFunc("/login", LoginHandler).
+		HandleFunc("/login", handlers.LoginHandler).
 		Method("POST").
 
 	r.
 		Name("Register").
-		HandleFunc("/register", LoginHandler).
+		HandleFunc("/register", handlers.LoginHandler).
 		Method("POST")
 	
 	r.
 		Name("Logout").
-		HandleFunc("/logout", LogoutHandler).
+		HandleFunc("/logout", handlers.LogoutHandler).
 		Method("POST")
 
 	// r.PathPrefix("/").Handler(http.FileServer(http.Dir("./static/")))

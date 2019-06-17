@@ -4,6 +4,7 @@ import (
 	"net/http"
 	// "log"
 	"fmt"
+	"time"
 	
 	"github.com/dgrijalva/jwt-go"
 
@@ -12,34 +13,59 @@ import (
 
 // https://www.sohamkamani.com/blog/golang/2019-01-01-jwt-authentication/
 
-var users = map[string]string {
-	"user1": "password1",
-	"user2": "password2"
-}
-
-func Register(c models.Credentials) string, error {
+func Register(c models.Credentials) (*models.User, *http.Cookie, int) {
 
 	// TODO: create a database connection with our user auth storage
 	// Check to see if already a user
 	userExists, ok := users[c.Username]
+	fmt.Print(userExists)
 	// userRole, ok :=userRoles[c.Username]
 
 	// If a password exists for the given user
 	// AND, if it is the same as the password we received, the we can move ahead
 	// if NOT, then we return an "Unauthorized" status
-	if !ok || userExists {
-		return nil, http.StatusConflict
+	if ok {
+		return nil, nil, http.StatusConflict
 	}
 
 	// TODO: create user with existing db connection
 
-	tkn = c.NewTkn()
-	// tkn = c.NewTkn(userRole)
 
-	tknStr, err := token.SignedString(jwtKey)
-	if err != nil {
-		return nil, http.StatusInternalServerError
+	// Declare the expiration time of the token
+	// here, we have kept it as 5 minutes
+	expTime := time.Now().Add(5 * time.Minute)
+	// Create the JWT claims, which includes the username and expiry time
+	claims := &models.Claims{
+		// UserId: userId,
+		Username: c.Username,
+		// Role: c.Role,
+		StandardClaims: jwt.StandardClaims{
+			// In JWT, the expiry time is expressed as unix milliseconds
+			ExpiresAt: expTime.Unix(),
+		},
 	}
 
-	return tknStr, http.StatusOK
+	// Declare the token with the algorithm used for signing, and the claims
+	tkn := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
+
+
+	tknStr, err := tkn.SignedString(jwtKey)
+	if err != nil {
+		return nil, nil, http.StatusInternalServerError
+	}
+
+	user := &models.User{
+		// UserId: userId,
+		Username: c.Username,
+		// UserRole:	userRole,
+	}
+
+	newCookie := &http.Cookie{
+		Name:    "tkn",
+		Value:   tknStr,
+		Expires: expTime,
+	}
+
+	// return newCookie, nil
+	return user, newCookie, 0
 }

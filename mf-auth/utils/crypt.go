@@ -1,19 +1,18 @@
 package utils
 
 import (
+	"log"
 
 	"golang.org/x/crypto/bcrypt"
-
-	"github.com/kvmac/merchforce-cms/mf-auth/models"
 )
 
-func (c *models.Credentials) HashAndSalt() {
-	pwd := []bytes(*c.Password)
+func HashAndSalt(p string) (string) {
+	pwd := []byte(p)
 
 	hash, err := bcrypt.GenerateFromPassword(pwd, bcrypt.MinCost)
 	if err != nil {
 		log.Println(err)
 	}
 
-	*c.Password = string(hash)
+	return string(hash)
 }

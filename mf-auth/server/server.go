@@ -1,9 +1,9 @@
-package main
+package server
 
 import (
 	"context"
 	"crypto/tls"
-	"flag"
+	// "flag"
 	"fmt"
 	// "io"
 	"log"
@@ -11,6 +11,9 @@ import (
 	"time"
 
 	"golang.org/x/crypto/acme/autocert"
+
+	"github.com/kvmac/merchforce-cms/mf-auth/models"
+	"github.com/kvmac/merchforce-cms/mf-auth/router"
 	// "github.com/kvmac/merchforce-cms/mf-framework/middleware"
 )
 
@@ -18,11 +21,9 @@ const (
 	httpPort  = "127.0.0.1:8080"
 )
 
+var m *autocert.Manager
 
-func (s *TlsServer)Serve() {
-
-	var m *autocert.Manager
-
+func (s *models.TlsServer)Serve() {
 	hostPolicy := func(ctx context.Context, host string) error {
 		// Note: change to your real host
 		allowedHost := "www.ts-app.kvmac.com"
@@ -40,13 +41,13 @@ func (s *TlsServer)Serve() {
 	}
 
 	// *s = &http.Server{
-	*s = http.Server{
+	s = http.Server{
 		ReadTimeout:		5 * time.Second,
 		WriteTimeout:		5 * time.Second,
 		IdleTimeout:		120 * time.Second,
 		Addr:						":443",
 		TLSConfig:			&tls.Config{GetCertificate: m.GetCertificate},
-		Handler:				Router()
+		Handler:				router.Router(),
 	}
 	// *s.Handler = Router()
 	// *s.ReadTimeout = 5 * time.Second
@@ -64,13 +65,13 @@ func (s *TlsServer)Serve() {
 	}()
 }
 
-func (s *HttpServer)Serve() {
-	*s = &http.Server{
+func (s *models.HttpServer)Serve() {
+	s = http.Server{
 	// *s = http.Server{
 		ReadTimeout:		5 * time.Second,
 		WriteTimeout:		5 * time.Second,
 		IdleTimeout:		120 * time.Second,
-		Handler:				Router()
+		Handler:				router.Router(),
 	}
 	// *s.ReadTimeout = 5 * time.Second
 	// *s.WriteTimeout = 5 * time.Second
@@ -83,7 +84,7 @@ func (s *HttpServer)Serve() {
 			http.Redirect(w, req, newURI, http.StatusFound)
 		})
 
-		*s.Handler = r
+		s.Handler = r
 	}
 
 	s.Addr = httpPort
@@ -96,6 +97,6 @@ func (s *HttpServer)Serve() {
 
 	// allow autocert handle Let's Encrypt callbacks over http
 	if m != nil {
-		server.Handler = m.HTTPHandler(httpServe.Handler)
+		s.Handler = m.HTTPHandler(s.Handler)
 	}
 }
