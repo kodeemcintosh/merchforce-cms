@@ -1,6 +1,6 @@
 
 import React, { useEffect, useState } from 'react';
-import { useStore } from '../../hooks/useStore';
+import { useStore } from '../../../hooks/useStore';
 
 export function MerchList() {
   const [ isLoading, setIsLoading ] = useState(false);

@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
-import { Routes, Switch } from 'react-router';
+import { Route, Switch } from 'react-router';
 import logo from './logo.svg';
 import { ContextStore, useStore } from './hooks/useStore';
 import './App.css';
-import { Main, Login, Register, ResetPassword, Admin } from './components/pages';
+import { Login, Register, ResetPassword, Admin } from './components/pages/auth';
+import { NotFound } from './components/shared/not-found';
+import { Storefront } from './components/pages/storefront';
 
 function App() {
   const [ isAuthorized, setIsAuthorized ] = useState(false);
@@ -15,8 +17,8 @@ function App() {
         <div className="auth-router">
           <Switch>
             <Route exact to="/login" render={() => <Login authorize={setIsAuthorized} />} />
-            <Route to="/register" component={Register} />
-            <Route to="/reset-password/:userId" component={ResetPassword} />
+            <Route exact to="/register" component={Register} />
+            <Route exact to="/reset-password/:userId" component={ResetPassword} />
           </Switch>
         </div>
       </div>
@@ -31,13 +33,13 @@ function App() {
 
         // }
         >
-          <div className="app-router">
-            <Switch>
-              <Route exact to="/" component={Main} />
-              <Route exact to="/admin" component={Main} />
-            </Switch>
-          </div>
-
+        <div className="app-router">
+          <Switch>
+            <Route to="/" component={Storefront} />
+            <Route to="/admin" component={Admin} />
+            <Route component={NotFound} />
+          </Switch>
+        </div>
       </ContextStore>
     </div>
   );

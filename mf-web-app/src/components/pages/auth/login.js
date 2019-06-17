@@ -1,7 +1,7 @@
 
 import React, { useState } from 'react';
 import { Link, Redirect } from 'react-router';
-import { useStore } from '../../hooks/useStore';
+import { useStore } from '../../../../hooks/useStore';
 import axios from 'axios';
 
 export function Login({ authorize }) {
