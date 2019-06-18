@@ -3,7 +3,8 @@ import { Route, Switch } from 'react-router';
 import logo from './logo.svg';
 import { ContextStore, useStore } from './hooks/useStore';
 import './App.css';
-import { Login, Register, ResetPassword, Admin } from './components/pages/auth';
+import { Admin } from './components/pages/admin';
+import { Login, Register, ResetPassword } from './components/pages/auth';
 import { NotFound } from './components/shared/not-found';
 import { Storefront } from './components/pages/storefront';
 

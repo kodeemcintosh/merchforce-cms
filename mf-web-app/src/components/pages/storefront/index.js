@@ -11,21 +11,31 @@ import { HowItWorks } from './how-it-works';
 import { MerchList } from './merch-list';
 import { MerchDetails } from './merch-details';
 
-export function Storefront() {
+// export const Storefront = () => {
+export const Storefront = ({ match }) => {
 
   return(
     <div className="storefront">
       <Header />
         <div className="app-router">
           <Switch>
-            <Redirect exact from="/" to="/featured" />
-            <Route to="/featured" component={Featured} />
-            <Route to="/account" component={Account} />
-            <Route to="/contact" component={Contact} />
-            <Route to="/cart" component={Cart} />
-            <Route to="/how-it-works" component={HowItWorks} />
-            <Route to="/merch" component={MerchList} />
-            <Route to="/merch/:merchId" component={MerchDetails} />
+            {/* <Route exact path="/" render={() => <Redirect to="/featured" />} />
+            <Route path="/featured" component={Featured} />
+            <Route path="/account" component={Account} />
+            <Route path="/contact" component={Contact} />
+            <Route path="/cart" component={Cart} />
+            <Route path="/how-it-works" component={HowItWorks} />
+            <Route exact path="/merch" component={MerchList} />
+            <Route path="/merch/:merchId" component={MerchDetails} />
+            <Route component={NotFound} /> */}
+            <Route exact path={`${match.url}`} render={() => <Redirect to="/featured" />} />
+            <Route path={`${match.url}/featured`} component={Featured} />
+            <Route path={`${match.url}/account`} component={Account} />
+            <Route path={`${match.url}/contact`} component={Contact} />
+            <Route path={`${match.url}/cart`} component={Cart} />
+            <Route path={`${match.url}/how-it-works`} component={HowItWorks} />
+            <Route exact path={`${match.url}/merch`} component={MerchList} />
+            <Route path={`${match.url}/merch/:merchId`} component={MerchDetails} />
             <Route component={NotFound} />
           </Switch>
         </div>

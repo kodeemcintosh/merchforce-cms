@@ -14,7 +14,6 @@ import (
 
 	"github.com/kvmac/merchforce-cms/mf-auth/models"
 	"github.com/kvmac/merchforce-cms/mf-auth/router"
-	// "github.com/kvmac/merchforce-cms/mf-framework/middleware"
 )
 
 const (
@@ -57,8 +56,8 @@ func (s *models.TlsServer)Serve() {
 	// *s.TLSConfig = &tls.Config{GetCertificate: m.GetCertificate}
 
 	go func() {
-		fmt.Printf("Starting HTTPS server on %s\n", tlsServe.Addr)
-		err := tlsServe.ListenAndServeTLS("", "")
+		fmt.Printf("Starting HTTPS server on %s\n", s.Addr)
+		err := s.ListenAndServeTLS("", "")
 		if err != nil {
 			log.Fatalf("httpsSrv.ListendAndServeTLS() failed with %s", err)
 		}
@@ -66,12 +65,14 @@ func (s *models.TlsServer)Serve() {
 }
 
 func (s *models.HttpServer)Serve() {
+	r := router.Router()
+
 	s = http.Server{
 	// *s = http.Server{
 		ReadTimeout:		5 * time.Second,
 		WriteTimeout:		5 * time.Second,
 		IdleTimeout:		120 * time.Second,
-		Handler:				router.Router(),
+		Handler:				r,
 	}
 	// *s.ReadTimeout = 5 * time.Second
 	// *s.WriteTimeout = 5 * time.Second

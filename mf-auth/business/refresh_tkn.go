@@ -14,7 +14,7 @@ import (
 
 
 func RefreshTkn(tknStr string) (*http.Cookie, int) {
-	jwtKey := os.Getenv("JWT_KEY")
+	jwtKey := []byte(os.Getenv("JWT_KEY"))
 	// jwtKey = []byte(jwtKey)
 	prevClaims := &models.Claims{}
 

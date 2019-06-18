@@ -2,32 +2,27 @@ package business
 
 import (
 	"net/http"
-	// "log"
+	"log"
 	"fmt"
 	"time"
 	
 	"github.com/dgrijalva/jwt-go"
 
+	"github.com/kvmac/merchforce-cms/mf-auth/data"
 	"github.com/kvmac/merchforce-cms/mf-auth/models"
 )
 
 
-func Register(c models.Credentials) (*models.User, *http.Cookie, int) {
-
-	// TODO: create a database connection with our user auth storage
-	// Check to see if already a user
-	userExists, ok := users[c.Username]
-	fmt.Print(userExists)
-	// userRole, ok :=userRoles[c.Username]
-
-	// If a password exists for the given user
-	// AND, if it is the same as the password we received, the we can move ahead
-	// if NOT, then we return an "Unauthorized" status
-	if ok {
-		return nil, nil, http.StatusConflict
-	}
-
+func Register(authUser models.AuthUser) (*models.User, *http.Cookie, int) {
+	jwtKey := []byte(os.Getenv("JWT_KEY"))
 	// TODO: create user with existing db connection
+	var db = &models.Db{}
+
+	err := db.InsertAuthtUser(authUser)
+	if err != nil {
+		log.Fatal(err)
+		return nil, nil, http.StatusInternalServerError
+	}
 
 
 	// Declare the expiration time of the token
@@ -35,9 +30,11 @@ func Register(c models.Credentials) (*models.User, *http.Cookie, int) {
 	expTime := time.Now().Add(5 * time.Minute)
 	// Create the JWT claims, which includes the username and expiry time
 	claims := &models.Claims{
-		// UserId: userId,
-		Username: c.Username,
-		// Role: c.Role,
+		UserId: userId,
+		Username: authUser.Username,
+		Email:		authUser.Email,
+		Role: authUser.Role,
+
 		StandardClaims: jwt.StandardClaims{
 			// In JWT, the expiry time is expressed as unix milliseconds
 			ExpiresAt: expTime.Unix(),
@@ -54,9 +51,10 @@ func Register(c models.Credentials) (*models.User, *http.Cookie, int) {
 	}
 
 	user := &models.User{
-		// UserId: userId,
-		Username: c.Username,
-		// UserRole:	userRole,
+		UserId: authUser.UserId,
+		Username: authUser.Username,
+		Email:		authUser.Email,
+		UserRole:	authUser.Role,
 	}
 
 	newCookie := &http.Cookie{

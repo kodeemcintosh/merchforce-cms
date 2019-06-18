@@ -1,7 +1,6 @@
-
 import React from 'react';
 
-export function Admin() {
+export const Admin = () => {
 
   return(
     <div className="admin">

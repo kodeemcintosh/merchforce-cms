@@ -8,13 +8,11 @@ import (
 	"github.com/dgrijalva/jwt-go"
 )
 
-var jwtKey = []byte("secret_key")
-
 func ValidateTkn(next http.Handler) http.Handler {
 
   return http.HandlerFunc(func(w http.ResponseWriter, req *http.Request) {
 
-		jwtKey := os.Getenv("JWT_KEY")
+		jwtKey := []byte(os.Getenv("JWT_KEY"))
 		// jwtKey = []byte(jwtKey)
 
 		// We can obtain the session token from the requests cookies, which come with every request

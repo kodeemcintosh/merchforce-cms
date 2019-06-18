@@ -1,13 +1,15 @@
 package models
 
 import (
+	"time"
 )
 
 type AuthUser struct {
 	UserId			string
 	Username		string
+	Email				string
 	Password		string
-	UserRole		int
+	Role				int
 	CreatedAt		time.Time
 	ModifiedAt	time.Time
 }
@@ -15,5 +17,6 @@ type AuthUser struct {
 type User struct {
 	UserId		string `bson: "userId"`
 	Username	string `bson: "username"`
-	UserRole	string `bson: "userRole"`
+	Email			string `bson: "email"`
+	Role			int `bson: "role"`
 }

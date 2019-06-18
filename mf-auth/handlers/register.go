@@ -12,23 +12,23 @@ import (
 )
 
 func Register(w http.ResponseWriter, req *http.Request) {
-	var creds models.Credentials
+	var authUser models.AuthUser
 	// Get the JSON body and decode into credentials
-	err := json.NewDecoder(r.Body).Decode(&creds)
+	err := json.NewDecoder(r.Body).Decode(&authUser)
 	if err != nil {
 		// If the structure of the body is wrong, return an HTTP error
 		w.WriteHeader(http.StatusBadRequest)
 		return
 	}
-	creds.Password = utils.HashAndSalt(creds.Password)
+	authUser.Password = utils.HashAndSalt(authUser.Password)
 
 	// remove this once you know what user1 password hash is
 	// DO NOT FORGET TO REMOVE ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	fmt.Sprintf("Password Hash is:  %s", creds.Password) //////////////////////////////////////////////////////////////////////////////////////////
+	fmt.Sprintf("Password Hash is:  %s", authUser.Password) //////////////////////////////////////////////////////////////////////////////////////////
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	// Create the JWT string
-	user, newCookie, err := business.Register(creds)
+	user, newCookie, err := business.Register(authUser)
 	if err != 0 {
 		// If there is an error in creating the JWT return an internal server error
 		w.WriteHeader(err)

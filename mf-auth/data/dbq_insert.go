@@ -12,8 +12,27 @@ import (
 	"github.com/kvmac/merchforce-cms/mf-auth/models"
 )
 
-func (db *Db) InsertUser(creds models.Credentials) (models.User, error) {
-	// userId := string(uuid.New())
+func (db *Db) InsertAuthUser(creds models.Credentials) (error) {
+
+	db.GetContext()
+	db.Connect()
+	defer db.Disconnect()
+
+	userFilter := bson.M{ "$or":
+									bson.M[]{
+										bson.M{"username", username},
+										bson.M{"email", email}
+									}
+								}
+
+	ctx := *db.Context
+	collection := db.Database.Collection("users")
+
+	isValid, err := collection.Find(ctx, userFilter).limit(1).size()
+	if !bool(isValid) || err != nil {
+		log.Fatal(err)
+		return err
+	}
 
 	user := &models.AuthUser{
 		UserId:				string(uuid.New()),
@@ -24,38 +43,21 @@ func (db *Db) InsertUser(creds models.Credentials) (models.User, error) {
 		ModifiedAt:		time.Now(),
 	}
 
+	_, err := collection.InsertOne(ctx, user)
+	if err != nil {
+		log.Fatal(err)
+		return err
+	}
+
+	return nil
+}
+
+
+func (db *Db) InsertAdminAuthUser(creds models.Credentials, role int) (error) {
+
 	db.GetContext()
 	db.Connect()
 	defer db.Disconnect()
-
-	ctx := *db.Context
-	collection := db.Database.Collection("users").InsertOne(ctx, user)
-	// collection := db.Database.Collection("users").InsertOne(ctx, bson.D{
-	// 	{"userId", userId},
-	// 	{"username", username},
-	// 	{"userRole", 0},
-	// 	{"createdAt", primitive.DateTime(timeMillis(time.Now()))}
-	// 	{"modifiedAt", primitive.DateTime(timeMillis(time.Now()))}
-	// })
-
-
-
-}
-
-func (db *Db) InsertAdminUser(creds models.Credentials, role int) (models.User, error) {
-	// userId := string(uuid.New())
-
-	// user := &models.User{
-
-	// }
-
-	// ctx := *db.Context
-	// collection := db.Database.Collection("users").InsertOne(ctx, bson.D{
-	// 	{"userId", userId},
-	// 	{"username", username},
-	// 	{"createdAt", primitive.DateTime(timeMillis())}
-
-	// })
 
 	adminUser := &models.AuthUser{
 		UserId:				string(uuid.New()),
@@ -66,12 +68,14 @@ func (db *Db) InsertAdminUser(creds models.Credentials, role int) (models.User, 
 		ModifiedAt:		time.Now(),
 	}
 
-	db.GetContext()
-	db.Connect()
-	defer db.Disconnect()
-
 	ctx := *db.Context
-	collection := db.Database.Collection("users").InsertOne(ctx, adminUser)
+	collection := db.Database.Collection("users")
 
+	_, err := collection.InsertOne(ctx, adminUser)
+	if err != nil {
+		log.Fatal(err)
+		return err
+	}
 
+	return adminUser
 }
