@@ -8,6 +8,7 @@ import (
 	"github.com/dgrijalva/jwt-go"
 
 	"github.com/kvmac/merchforce-cms/mf-auth/models"
+	"github.com/kvmac/merchforce-cms/mf-auth/utils"
 )
 
 func Register(w http.ResponseWriter, req *http.Request) {
@@ -19,10 +20,12 @@ func Register(w http.ResponseWriter, req *http.Request) {
 		w.WriteHeader(http.StatusBadRequest)
 		return
 	}
-	creds.HashAndSalt()
+	creds.Password = utils.HashAndSalt(creds.Password)
 
 	// remove this once you know what user1 password hash is
-	fmt.Sprintf("Password Hash is:  %s", creds.Password)
+	// DO NOT FORGET TO REMOVE ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	fmt.Sprintf("Password Hash is:  %s", creds.Password) //////////////////////////////////////////////////////////////////////////////////////////
+	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	// Create the JWT string
 	user, newCookie, err := business.Register(creds)

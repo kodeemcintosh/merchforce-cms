@@ -11,7 +11,6 @@ import (
 	"github.com/kvmac/merchforce-cms/mf-auth/models"
 )
 
-// https://www.sohamkamani.com/blog/golang/2019-01-01-jwt-authentication/
 
 func Register(c models.Credentials) (*models.User, *http.Cookie, int) {
 

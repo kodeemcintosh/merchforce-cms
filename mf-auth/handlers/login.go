@@ -25,7 +25,9 @@ func Login(w http.ResponseWriter, req *http.Request) {
 		w.WriteHeader(http.StatusBadRequest)
 		return
 	}
-	creds.Password = HashAndSalt(creds.Password)
+
+	// hash and salt incoming password
+	creds.Password = utils.HashAndSalt(creds.Password)
 
 	// Create the JWT string
 	// newCookie, err := business.Login(creds)

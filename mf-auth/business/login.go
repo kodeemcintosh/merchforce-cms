@@ -19,7 +19,7 @@ var users = map[string]string {
 	"user2": "password2",
 }
 
-var jwtKey = []byte("secret_key")
+// var jwtKey = []byte("secret_key")
 
 // func Login(c models.Credentials) (&http.Cookie, string) {
 func Login(c models.Credentials) (*models.User, *http.Cookie, int) {

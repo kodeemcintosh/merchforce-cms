@@ -6,6 +6,7 @@ import (
 	"golang.org/x/crypto/bcrypt"
 )
 
+
 func HashAndSalt(p string) (string) {
 	pwd := []byte(p)
 
