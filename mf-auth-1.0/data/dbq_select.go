@@ -18,10 +18,8 @@ func (db *Db) SelectUser(username string, email string) (models.User, error) {
 	db.Connect()
 	defer db.Disconnect()
 
-	ctx := *db.Context
-	collection := db.Database.Collection("users")
 
-	userFilter := bson.M{ "$or":
+	filter := bson.M{ "$or":
 									bson.M[]{
 										bson.M{"username", username},
 										bson.M{"email", email}
@@ -29,7 +27,9 @@ func (db *Db) SelectUser(username string, email string) (models.User, error) {
 								}
 
 	user := &models.User{}
-	_, err := collection.FindOne(ctx, userFilter).Decode(&user)
+
+	collection := db.Database.Collection("users")
+	_, err := collection.FindOne(*db.Context, filter).Decode(&user)
 	if err != nil {
 		log.Fatal(err)
 		return nil, err
@@ -38,16 +38,15 @@ func (db *Db) SelectUser(username string, email string) (models.User, error) {
 	return user, nil
 }
 
+
 func (db *Db) ValidateCredentials(inputCreds models.Credentials) (bool) {
 
 	db.GetContext()
 	db.Connect()
 	defer db.Disconnect()
 
-	ctx := *db.Context
-	collection := db.Database.Collection("users")
 
-	credsFilter := bson.M{ "$or":
+	filter := bson.M{ "$or":
 									bson.M[]{
 										bson.M{"username", inputCreds.Username},
 										bson.M{"email", inputCreds.Email}
@@ -55,7 +54,9 @@ func (db *Db) ValidateCredentials(inputCreds models.Credentials) (bool) {
 								}
 
 	storedCreds := &models.Credentials{}
-	_, ok := collection.FindOne(ctx, credsFilter).Decode(&storedCreds)
+
+	collection := db.Database.Collection("users")
+	_, ok := collection.FindOne(*db.Context, filter).Decode(&storedCreds)
 	if !ok || inputCreds.Password != storedCreds.Password {
 		return false
 	}

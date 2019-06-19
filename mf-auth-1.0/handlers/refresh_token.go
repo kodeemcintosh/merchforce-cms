@@ -12,11 +12,7 @@ import (
 	"github.com/kvmac/merchforce-cms/mf-auth/business"
 )
 
-// https://www.sohamkamani.com/blog/golang/2019-01-01-jwt-authentication/
-
-
-
-func RefreshTkn(w http.ResponseWriter, req *http.Request) {
+func RefreshToken(w http.ResponseWriter, req *http.Request) {
 
 	// We can obtain the session token from the requests cookies, which come with every request
 	c, err := req.Cookie("tkn")
@@ -43,7 +39,7 @@ func RefreshTkn(w http.ResponseWriter, req *http.Request) {
 	// Create the JWT string
 	// tknStr, err := business.RefreshTkn(tkn.Claims)
 	// tknStr.RefreshTkn(tkn.Claims)
-	newCookie, err := business.RefreshTkn(tknStr)
+	newCookie, err := business.RefreshToken(tknStr)
 	if err != 0 {
 		// If there is an error in creating the JWT return an internal server error
 		w.WriteHeader(err)

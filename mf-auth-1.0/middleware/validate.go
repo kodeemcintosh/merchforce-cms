@@ -20,10 +20,12 @@ func ValidateTkn(next http.Handler) http.Handler {
 		if err != nil {
 			if err == http.ErrNoCookie {
 				// If the cookie is not set, return an unauthorized status
+				w.Header().Set("Location", "/login")
 				w.WriteHeader(http.StatusUnauthorized)
 				return
 			}
 			// For any other type of error, return a bad request status
+			w.Header().Set("Location", "/login")
 			w.WriteHeader(http.StatusBadRequest)
 			return
 		}

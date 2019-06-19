@@ -18,17 +18,17 @@ func (db *Db) InsertAuthUser(creds models.Credentials) (error) {
 	db.Connect()
 	defer db.Disconnect()
 
-	userFilter := bson.M{ "$or":
+	filter := bson.M{ "$or":
 									bson.M[]{
-										bson.M{"username", username},
-										bson.M{"email", email}
+										bson.M{"username", creds.Username},
+										bson.M{"email", creds.Email}
 									}
 								}
 
 	ctx := *db.Context
 	collection := db.Database.Collection("users")
 
-	isValid, err := collection.Find(ctx, userFilter).limit(1).size()
+	isValid, err := collection.Find(ctx, filter).limit(1).size()
 	if !bool(isValid) || err != nil {
 		log.Fatal(err)
 		return err
@@ -68,14 +68,12 @@ func (db *Db) InsertAdminAuthUser(creds models.Credentials, role int) (error) {
 		ModifiedAt:		time.Now(),
 	}
 
-	ctx := *db.Context
 	collection := db.Database.Collection("users")
-
-	_, err := collection.InsertOne(ctx, adminUser)
+	_, err := collection.InsertOne(*db.Context, adminUser)
 	if err != nil {
 		log.Fatal(err)
 		return err
 	}
 
-	return adminUser
+	return nil
 }

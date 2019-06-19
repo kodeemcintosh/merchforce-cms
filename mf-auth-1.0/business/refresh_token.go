@@ -13,7 +13,7 @@ import (
 )
 
 
-func RefreshTkn(tknStr string) (*http.Cookie, int) {
+func RefreshToken(tknStr string) (*http.Cookie, int) {
 	jwtKey := []byte(os.Getenv("JWT_KEY"))
 	// jwtKey = []byte(jwtKey)
 	prevClaims := &models.Claims{}

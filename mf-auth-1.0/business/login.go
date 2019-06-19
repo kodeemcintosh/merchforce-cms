@@ -12,8 +12,6 @@ import (
 	"github.com/kvmac/merchforce-cms/mf-auth/models"
 )
 
-// https://www.sohamkamani.com/blog/golang/2019-01-01-jwt-authentication/
-
 var users = map[string]string {
 	"user1": "password1",
 	"user2": "password2",
