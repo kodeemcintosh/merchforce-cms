@@ -7,12 +7,17 @@ export function CartMenu({ }) {
 
   const [ store, setStore ] = useStore();
 
+  const [ isOpen, setIsOpen ] = useState(false);
+
   const cart = store.cart;
+
+
+  const toggleMenu = () => setIsOpen(!isOpen);
 
 
   return(
     <div className="cart-summary-menu">
-      <div className="cart-summary-title">Shopping Cart</div>
+      <div className="cart-summary-title">Shopping Icon</div>
       <span>line</span>
       {cart.items.map((item) => {
         <div className="cart-summary-item">

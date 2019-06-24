@@ -1,48 +1,42 @@
-
 import React, { useState } from 'react';
-import { Link, Redirect } from 'react-router';
+import { Link } from 'react-router';
 import { useStore } from '../../../../hooks/useStore';
-import axios from 'axios';
+import OktaAuth from '@okta/okta-auth-js';
+import { withAuth } from '@okta/okta-react';
 
-export function Login({ authorize }) {
+export default withAuth(function LoginForm({ auth }) {
   const [ store, setStore ] = useStore();
   const [ emailInput, setEmailInput ] = useState('');
   const [ passwordInput, setPasswordInput ] = useState('');
   const [ isLoading, setIsLoading ] = useState(false);
+  const [ sessionToken, setSessionToken ] = useState('');
   const [ isInvalidLogin, setIsInvalidLogin ] = useState(false);
+  const [ sessionToken, setSessionToken ] = useState(null);
+
+  const oktaAuth = new OktaAuth({ url: process.env.MERCHFORCE_BASE });
 
   const handleEmailInput = (e) => setEmailInput(e.target.value)
   const handlePasswordInput = (e) => setPasswordInput(e.target.value);
 
+
   const handleLogin = async () => {
-    try {
-      setIsLoading(true);
+    setIsLoading(true);
 
-      const payload = {
-        email: emailInput,
-        password: passwordInput
-      }
+    oktaAuth.signIn({
+      email: email,
+      password: password
+    })
+    .then((res) => setSessionToken(res.sessionToken), setIsLoading(false))
+    .catch((err) => setIsInvalidLogin(true));
 
-      let response = await axios.post('/login', payload);
-      response = JSON.parse(respone);
+    if(!isInvalidLogin) {
 
-      if(response.status === 200) {
-        authorize();
-
-        let user = response.user;
-        user.role = response.headers.role;
-
-        await sessionStorage.setItem('tkn', response.headers.tkn);
-        setStore((prevStore) => ({ ...prevStore, user }));
-
-        setIsLoading(false);
-        setRedirectToHome(true);
-      }
-
-      setIsInvalidLogin(true);
-    } catch(err) {
-      console.warn(err);
     }
+  }
+
+  if(sessionToken) {
+    auth.redirect({ sessionToken: sessionToken });
+    return null;
   }
 
   if(isLoading) {
@@ -53,16 +47,15 @@ export function Login({ authorize }) {
     );
   }
 
-
   return(
     <div className="login">
       <form onSubmit={handleLogin}>
         {isInvalidLogin ? <label>Username or password is invalid</label> : null}
         <input placeholder="email" value={emailInput} onChange={handleEmailInput}></input>
         <input type="password" placeholder="password" value={passwordInput} onChange={handlePasswordInput}></input>
-        <button onClick={handleLogin}>Login</button>
+        <input id="login-submit" type="submit" value="Submit" />
       </form>
       <Link to="/register">register</Link>
     </div>
   );
-}
+});

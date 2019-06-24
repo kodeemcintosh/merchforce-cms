@@ -2,3 +2,12 @@
   command = "yarn build"
   publish = "/build"
   functions = "/functions"
+
+[context.production]
+  environment = {
+    OKTA_VERSION = "",
+    OKTA_DOMAIN=https://dev-612778-admin.okta.com,
+    OKTA_CLIENT_ID=5TWnASOwZdvo1TRiXIodqITidq93Owt6,
+    MERCHFORCE_BASE=https://kvmac.merchforce.io,
+    CUSTOMER_SUB_DOMAIN=kvmac
+  }

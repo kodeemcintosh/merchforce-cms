@@ -1,18 +1,25 @@
 import React from 'react';
 import { Switch, Route, Redirect } from 'react-router';
 
-import { Header } from '../../layout/header';
+import Header from '../../layout/header';
 import { Footer } from '../../layout/footer';
-import { Account } from './account';
+import Account from './account';
 import { Cart } from './cart'
 import { Contact } from './contact';
 import { Featured } from './featured';
 import { HowItWorks } from './how-it-works';
 import { MerchList } from './merch-list';
 import { MerchDetails } from './merch-details';
+import withAuth from '@okta/okta-react/dist/withAuth';
 
-// export const Storefront = () => {
-export const Storefront = ({ match }) => {
+export const Storefront = () => {
+// export default withAuth(function Storefront({ match, auth }) {
+  // const checkAuth = async () => {
+  //   const isAuthenticated = await auth.isAuthenticated();
+  //   if (isAuthenticated) {
+  //     setIsAuthenticated(isAuthenticated);
+  //   }
+  // }
 
   return(
     <div className="storefront">
@@ -42,4 +49,5 @@ export const Storefront = ({ match }) => {
       <Footer />
     </div>
   );
-}
+// });
+};

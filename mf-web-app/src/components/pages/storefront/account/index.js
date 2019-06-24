@@ -1,5 +1,8 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import { withAuth } from '@okta/okta-react';
+
 import { Switch, Route, NavLink, Redirect } from 'react-router';
+import { useUser } from '../../../../hooks/useUser';
 import { Overview } from './overview';
 import { Profile } from './profile';
 import { OrderDetails } from './order-details';
@@ -7,24 +10,41 @@ import { Orders } from './orders';
 import { ChangePassword } from './change-password';
 import { Receipts } from './receipts';
 
-export const Account = ({ match }) => {
+export default withAuth(function Account({ match, auth }) {
+
+  const [ user, setUser ] = useState(null);
+  const [ account, setAccount ] = useState(null);
+
+  const getUser =  async () => {
+    auth.getUser().then((user) => setUser(user));
+    // cont user = useUser();
+    const userAccount = await useUser();
+
+    setAccount(userAccount);
+  }
+
+  useEffect(() => {
+    getUser();
+  });
+
+  if(!user) return null;
 
   return (
     <div className="account">
       <Sidenav />
       <div className="account-router">
         <Switch>
-          <Route exact path={`${match.url}`} component={Overview}></Route>
-          <Route path={`${match.url}/profile`} component={Profile}></Route>
-          <Route exact path={`${match.url}/orders`} component={Orders}></Route>
-          <Route path={`${match.url}/orders/:orderId`} component={OrderDetails}></Route>
-          <Route path={`${match.url}/change-password`} component={ChangePassword}></Route>
-          <Route path={`${match.url}/receipts`} component={Receipts}></Route>
+          <Route exact path={`${match.url}`} component={() => <Overview />}></Route>
+          <Route path={`${match.url}/profile`} component={() => <Profile />}></Route>
+          <Route exact path={`${match.url}/orders`} component={() => <Orders />}></Route>
+          <Route path={`${match.url}/orders/:orderId`} component={() => <OrderDetails />}></Route>
+          <Route path={`${match.url}/change-password`} component={() => <ChangePassword />}></Route>
+          <Route path={`${match.url}/receipts`} component={() => <Receipts />}></Route>
         </Switch>
       </div>
     </div>
   );
-}
+});
 
 const Sidenav = () => {
 

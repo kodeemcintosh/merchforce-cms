@@ -7,24 +7,10 @@ import { Admin } from './components/pages/admin';
 import { Login, Register, ResetPassword } from './components/pages/auth';
 import { NotFound } from './components/shared/not-found';
 import { Storefront } from './components/pages/storefront';
+import { SecureRoute, ImplicitCallback } from '@okta/okta-react';
 
 function App() {
-  const [ isAuthorized, setIsAuthorized ] = useState(false);
   const [ store, setStore ] = useStore();
-
-  if(!isAuthorized) {
-    return (
-      <div className="App">
-        <div className="auth-router">
-          <Switch>
-            <Route exact to="/login" render={() => <Login authorize={setIsAuthorized} />} />
-            <Route exact to="/register" component={Register} />
-            <Route exact to="/reset-password/:userId" component={ResetPassword} />
-          </Switch>
-        </div>
-      </div>
-    )
-  }
 
   return (
     <div className="App">
@@ -34,10 +20,15 @@ function App() {
 
         // }
         >
-        <div className="app-router">
+        <div className="router">
           <Switch>
-            <Route to="/" component={Storefront} />
-            <Route to="/admin" component={Admin} />
+            <Route exact to="/login" render={Login} />
+            <Route exact to="/register" component={Register} />
+            <Route exact to="/reset-password/:userId" component={ResetPassword} />
+
+            <SecureRoute to="/" component={Storefront} />
+            <SecureRoute to="/admin" component={Admin} />
+            <SecureRoute to="/implicit/callback" component={ImplicitCallback} />
             <Route component={NotFound} />
           </Switch>
         </div>
