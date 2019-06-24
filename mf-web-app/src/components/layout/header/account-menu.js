@@ -1,12 +1,14 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router';
+import { NavLink } from 'react-router';
 
-export function AccountMenu({ first, last }) {
+export function AccountMenu({ auth, first, last }) {
   let fullName = `${first} ${last}`;
 
   const [ isOpen, setIsOpen ] = useState(false);
 
   const toggleMenu = () => setIsOpen(!isOpen);
+
+  const logout = async () => auth.logout();
 
   return(
     <div className="account-menu">
@@ -14,10 +16,10 @@ export function AccountMenu({ first, last }) {
       <popover>
         <div className="customer-name">{fullName}</div>
         <span>line</span>
-        <Link to="/account/profile" />
-        <Link to="/account/contact" />
+        <NavLink to="/account/profile" />
+        <NavLink to="/account/contact" />
         <span>line</span>
-        <Link to="/logout" />
+        <div className="logout-button" onClick={logout}>logout</div>
       </popover>
     </div>
   );

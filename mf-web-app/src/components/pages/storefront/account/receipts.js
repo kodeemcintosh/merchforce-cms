@@ -4,6 +4,7 @@ export function Receipts() {
 
   return(
     <div className="receipts">
+      receipts
     </div>
   );
 }

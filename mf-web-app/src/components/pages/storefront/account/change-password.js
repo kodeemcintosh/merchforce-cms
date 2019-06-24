@@ -4,6 +4,7 @@ export function ChangePassword() {
 
   return(
     <div className="change-password">
+      change password
     </div>
   );
 }
