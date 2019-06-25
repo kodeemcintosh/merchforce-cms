@@ -6,8 +6,8 @@ export function useModal() {
 
   const toggleModal = () => setModalStatus(!modalStatus);
 
-  return {
+  return [
     modalStatus,
     toggleModal
-  }
+  ];
 }

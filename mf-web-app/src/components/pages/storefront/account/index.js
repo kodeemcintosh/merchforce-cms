@@ -31,16 +31,22 @@ export default withAuth(function Account({ match, auth }) {
 
   return (
     <div className="account">
-      <Sidenav />
+      {/* <Sidenav /> */}
       <div className="account-router">
-        <Switch>
+        <Overview />
+        <Profile />
+        <Orders />
+        <OrderDetails />
+        <ChangePassword />
+        <Receipts />
+        {/* <Switch>
           <Route exact path={`${match.url}`} component={() => <Overview />}></Route>
           <Route path={`${match.url}/profile`} component={() => <Profile />}></Route>
           <Route exact path={`${match.url}/orders`} component={() => <Orders />}></Route>
           <Route path={`${match.url}/orders/:orderId`} component={() => <OrderDetails />}></Route>
           <Route path={`${match.url}/change-password`} component={() => <ChangePassword />}></Route>
           <Route path={`${match.url}/receipts`} component={() => <Receipts />}></Route>
-        </Switch>
+        </Switch> */}
       </div>
     </div>
   );

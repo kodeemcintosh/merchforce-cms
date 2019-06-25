@@ -1,23 +1,35 @@
-
 import React, { useEffect, useState } from 'react';
 import { useStore } from '../../../hooks/useStore';
+import { withAuth } from '@okta/okta-react';
 
-export function MerchList() {
+export default withAuth(function MerchList({ auth }) {
   const [ isLoading, setIsLoading ] = useState(false);
   const [ merch, setMerch ] = useState([])
+  const [ pageNumber, setPageNumber ] = useState(0)
 
-  useEffect(() => {
-    const getMerch = async () => {
+  useEffect(async () => {
+    try {
       setIsLoading(true);
-      let response = await axios.GET('/merch', params);
+      let params = {
+        pageNumber,
+      }
+
+      let accessToken = await auth.getAccessToken();
+
+      let response = await axios.GET('/merch', {headers: {
+        Authorization: `Bearer ${accessToken}`
+        }}, params);
       // response = JSON.parse(response.body);
 
       setMerch(response.merch);
       setIsLoading(false);
-    }
 
-    getMerch();
-  })
+      console.log('merchList:  ', merchList);
+    } catch(err) {
+      console.warn(err);
+    }
+  }, [pageNumber]);
+
 
   return(
     <div className="merch-list">
@@ -34,4 +46,4 @@ export function MerchList() {
       })}
     </div>
   );
-}
+});
