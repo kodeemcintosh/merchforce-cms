@@ -1,14 +1,13 @@
 import React, { useEffect, useState } from 'react';
 // import { useStore } from '../../../hooks/useStore';
-import useAuth from '../../../hooks/useOkta';
-// import { withAuth } from '@okta/okta-react';
+import Okta from '../../../auth/Okta';
+import { withAuth } from '@okta/okta-react';
 import axios from 'axios';
 
-export default function MerchList() {
+export default withAuth(function MerchList({ auth }) {
   const [ isLoading, setIsLoading ] = useState(false);
   const [ merch, setMerch ] = useState([])
   const [ pageNumber, setPageNumber ] = useState(0)
-  const { auth } = useAuth();
 
   useEffect(() => {
     async function getMerch() {
@@ -65,4 +64,4 @@ export default function MerchList() {
       <div onClick={() => handlePagination(1)}>nextPage</div>
     </div>
   );
-};
+});

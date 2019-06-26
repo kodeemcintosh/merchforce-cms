@@ -1,10 +1,12 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 // import useStore from '../../../../hooks/useStore';
-// import { withAuth } from '@okta/okta-react';
-import useOkta from './../../../../hooks/useOkta';
+import { withAuth } from '@okta/okta-react';
+import Okta from '../../../../auth/Okta';
 
-export default function LoginForm() {
+const okta = new Okta();
+
+export default withAuth(function LoginForm({ auth }) {
 // export default withAuth(function LoginForm({ auth }) {
   // const [ store, setStore ] = useStore();
   const [ emailInput, setEmailInput ] = useState('');
@@ -13,7 +15,10 @@ export default function LoginForm() {
   const [ isInvalidLogin, setIsInvalidLogin ] = useState(false);
   const [ sessionToken, setSessionToken ] = useState(null);
 
-  let okta, { auth } = useOkta();
+  // let okta = new Okta();
+  console.log('------------- useOkta:  ', okta);
+  // console.log('------------- OKTA:  ', okta);
+  // console.log('------------- auth:  ', auth);
 
   const handleEmailInput = (e) => setEmailInput(e.target.value)
   const handlePasswordInput = (e) => setPasswordInput(e.target.value);
@@ -23,11 +28,7 @@ export default function LoginForm() {
       e.preventDefault();
       setIsLoading(true);
 
-      okta.signIn({
-        email: emailInput,
-        password: passwordInput
-      })
-      .then((res) => JSON.parse(res))
+      okta.signIn(emailInput, passwordInput)
       .then((res) => {
         if(res.status !== 'SUCCESS') {
           setIsInvalidLogin(true);
@@ -46,7 +47,7 @@ export default function LoginForm() {
   }
 
   if(sessionToken) {
-    auth.redirect({ sessionToken: sessionToken });
+    // auth.redirect({ sessionToken: sessionToken });
     return null;
   }
 
@@ -66,9 +67,9 @@ export default function LoginForm() {
         <input type="password" placeholder="password" value={passwordInput} onChange={handlePasswordInput}></input>
         <input id="login-submit" type="submit" value="Submit" />
       </form>
-      <button onClick={handleLogin}>Login</button>
       <Link to="/register">register</Link>
+      <Link to="/reset-password">forgot password?</Link>
     </div>
   );
-};
+});
 // });

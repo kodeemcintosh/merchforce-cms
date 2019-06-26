@@ -1,15 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { useModal } from '../../../hooks/useModal';
 import { ImageViewer } from '../../shared/image-viewer';
-// import { withAuth } from '@okta/okta-react';
-import useOkta from './../../../hooks/useOkta';
+import { withAuth } from '@okta/okta-react';
+import Okta from '../../../auth/Okta';
 import axios from 'axios';
 
-export default function MerchDetails({ match }) {
+export default withAuth(function MerchDetails({ auth, match }) {
   const [ modalStatus, toggleModal ] = useModal();
   const [ merchDetails, setMerchDetails ] = useState(null);
   const [ isLoading, setIsLoading ] = useState(false);
-  let { auth } = useOkta();
+  let okta = new Okta();
 
   let merchId = match.params.merchId;
 
@@ -56,4 +56,4 @@ export default function MerchDetails({ match }) {
         {merchDetails}
     </div>
   );
-};
+});
