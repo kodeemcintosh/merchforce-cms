@@ -1,10 +1,11 @@
 
 import React from 'react';
 
-export function Featured() {
+export default function Featured() {
 
   return(
     <div className="featured">
+    Featured
     </div>
   );
 }

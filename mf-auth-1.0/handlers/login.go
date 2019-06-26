@@ -13,7 +13,6 @@ import (
 	"github.com/kvmac/merchforce-cms/mf-auth/utils"
 )
 
-// https://www.sohamkamani.com/blog/golang/2019-01-01-jwt-authentication/
 
 func Login(w http.ResponseWriter, req *http.Request) {
 	var creds models.Credentials

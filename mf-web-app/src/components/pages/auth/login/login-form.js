@@ -1,36 +1,47 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router';
-import { useStore } from '../../../../hooks/useStore';
-import OktaAuth from '@okta/okta-auth-js';
-import { withAuth } from '@okta/okta-react';
+import { Link } from 'react-router-dom';
+// import useStore from '../../../../hooks/useStore';
+// import { withAuth } from '@okta/okta-react';
+import useOkta from './../../../../hooks/useOkta';
 
-export default withAuth(function LoginForm({ auth }) {
-  const [ store, setStore ] = useStore();
+export default function LoginForm() {
+// export default withAuth(function LoginForm({ auth }) {
+  // const [ store, setStore ] = useStore();
   const [ emailInput, setEmailInput ] = useState('');
   const [ passwordInput, setPasswordInput ] = useState('');
   const [ isLoading, setIsLoading ] = useState(false);
-  const [ sessionToken, setSessionToken ] = useState('');
   const [ isInvalidLogin, setIsInvalidLogin ] = useState(false);
   const [ sessionToken, setSessionToken ] = useState(null);
 
-  const oktaAuth = new OktaAuth({ url: process.env.MERCHFORCE_BASE });
+  let okta, { auth } = useOkta();
 
   const handleEmailInput = (e) => setEmailInput(e.target.value)
   const handlePasswordInput = (e) => setPasswordInput(e.target.value);
 
+  const handleLogin = async (e) => {
+    try {
+      e.preventDefault();
+      setIsLoading(true);
 
-  const handleLogin = async () => {
-    setIsLoading(true);
+      okta.signIn({
+        email: emailInput,
+        password: passwordInput
+      })
+      .then((res) => JSON.parse(res))
+      .then((res) => {
+        if(res.status !== 'SUCCESS') {
+          setIsInvalidLogin(true);
+          return;
+        }
 
-    oktaAuth.signIn({
-      email: email,
-      password: password
-    })
-    .then((res) => setSessionToken(res.sessionToken), setIsLoading(false))
-    .catch((err) => setIsInvalidLogin(true));
+        setSessionToken(res.sessionToken);
+        setIsLoading(false);
+      })
+      .catch((err) => console.log("Error with login", err));
 
-    if(!isInvalidLogin) {
-
+      // let response = await axios.post('/login', payload);
+    } catch(err) {
+      console.warn(err);
     }
   }
 
@@ -55,7 +66,9 @@ export default withAuth(function LoginForm({ auth }) {
         <input type="password" placeholder="password" value={passwordInput} onChange={handlePasswordInput}></input>
         <input id="login-submit" type="submit" value="Submit" />
       </form>
+      <button onClick={handleLogin}>Login</button>
       <Link to="/register">register</Link>
     </div>
   );
-});
+};
+// });

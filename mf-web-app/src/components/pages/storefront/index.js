@@ -6,13 +6,13 @@ import { Footer } from '../../layout/footer';
 import Account from './account';
 import { Cart } from './cart'
 import { Contact } from './contact';
-import { Featured } from './featured';
+import Featured from './featured';
 import { HowItWorks } from './how-it-works';
-import { MerchList } from './merch-list';
-import { MerchDetails } from './merch-details';
-import withAuth from '@okta/okta-react/dist/withAuth';
+import MerchList from './merch-list';
+import MerchDetails from './merch-details';
+// import { withAuth } from '@okta/okta-react';
 
-export const Storefront = () => {
+export const Storefront = ({ match }) => {
 // export default withAuth(function Storefront({ match, auth }) {
   // const checkAuth = async () => {
   //   const isAuthenticated = await auth.isAuthenticated();
@@ -35,6 +35,18 @@ export const Storefront = () => {
             <Route exact path="/merch" component={MerchList} />
             <Route path="/merch/:merchId" component={MerchDetails} />
             <Route component={NotFound} /> */}
+
+
+
+
+
+
+
+
+
+
+
+
             <Route exact path={`${match.url}`} render={() => <Redirect to="/featured" />} />
             <Route path={`${match.url}/featured`} component={Featured} />
             <Route path={`${match.url}/account`} component={Account} />
@@ -43,7 +55,7 @@ export const Storefront = () => {
             <Route path={`${match.url}/how-it-works`} component={HowItWorks} />
             <Route exact path={`${match.url}/merch`} component={MerchList} />
             <Route path={`${match.url}/merch/:merchId`} component={MerchDetails} />
-            <Route component={NotFound} />
+            {/* <Route component={NotFound} /> */}
           </Switch>
         </div>
       <Footer />

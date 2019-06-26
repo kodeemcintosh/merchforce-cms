@@ -1,7 +1,7 @@
 import React from 'react';
-import { Link } from 'react-router';
+import { Link } from 'react-router-dom';
 
-export function Register() {
+export default function Register() {
 
   const handleRegisterForm = () => {
     console.log('handle-register-form');
@@ -15,8 +15,8 @@ export function Register() {
       <input />
       <input />
       </form>
-      <Link to="/login" />
-      <Link to="/reset-password" />
+      <Link to="/login">signin</Link>
+      <Link to="/reset-password">reset password</Link>
     </div>
   );
 }

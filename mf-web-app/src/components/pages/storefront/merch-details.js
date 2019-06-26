@@ -1,25 +1,34 @@
 import React, { useState, useEffect } from 'react';
-import useModal from '../../../hooks';
-import ImageViewer from '../../shared';
-import { withAuth } from '@okta/okta-react';
+import { useModal } from '../../../hooks/useModal';
+import { ImageViewer } from '../../shared/image-viewer';
+// import { withAuth } from '@okta/okta-react';
+import useOkta from './../../../hooks/useOkta';
 import axios from 'axios';
 
-export default withAuth(function MerchDetails({ match, auth }) {
+export default function MerchDetails({ match }) {
   const [ modalStatus, toggleModal ] = useModal();
   const [ merchDetails, setMerchDetails ] = useState(null);
   const [ isLoading, setIsLoading ] = useState(false);
+  let { auth } = useOkta();
 
-  useEffect(async () => {
-    try {
-      setIsLoading(true);
+  let merchId = match.params.merchId;
 
-      const merchId = match.params.merchId;
+  useEffect(() => {
+    const getMerch = async () => {
       const accessToken = await auth.getAccessToken();
 
-      let response = await axios.GET(`/merch/${merchId}`, {headers: {
+      return await axios.GET(`/merch/${merchId}`, {headers: {
         Authorization: `Bearer ${accessToken}`
       }})
       .then((res) => JSON.parse(res.body));
+    }
+
+    try {
+      setIsLoading(true);
+
+      // const merchId = match.params.merchId;
+
+      let response = getMerch();
 
       setMerchDetails(response.merch);
 
@@ -29,7 +38,7 @@ export default withAuth(function MerchDetails({ match, auth }) {
       console.warn(err);
       setIsLoading(false);
     }
-  }, [id = match.params.merchId]);
+  }, [auth, merchId]);
   // }, [match.params.merchId]);
 
   if(isLoading) {
@@ -44,6 +53,7 @@ export default withAuth(function MerchDetails({ match, auth }) {
         isOpen={modalStatus}
         closeViewer={toggleModal}
         />
+        {merchDetails}
     </div>
   );
-});
+};

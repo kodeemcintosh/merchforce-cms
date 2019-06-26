@@ -1,28 +1,33 @@
 
-import React, { useEffect } from 'react';
-import { useStore } from './../../../hooks/useStore';
-import { Link } from 'react-router';
+import React, { useState, useEffect } from 'react';
+// import useStore from './../../../hooks/useStore';
+import { Link } from 'react-router-dom';
 
-export function CartMenu({ }) {
+export function CartMenu({ cart }) {
 
-  const [ store, setStore ] = useStore();
+  // const [ store, setStore ] = useStore();
 
   const [ isOpen, setIsOpen ] = useState(false);
 
-  const cart = store.cart;
-
+  // const cart = store.cart;
 
   const toggleMenu = () => setIsOpen(!isOpen);
+
+  useEffect();
 
 
   return(
     <div className="cart-summary-menu">
-      <div className="cart-summary-title">Shopping Icon</div>
+      <div className="cart-summary-title" onClick={toggleMenu}>Shopping Icon</div>
       <span>line</span>
       {cart.items.map((item) => {
-        <div className="cart-summary-item">
-          {`${item.quantity} x `}<img className="cart-summary-item-image" src={item.img} />
-        </div>
+        return (
+          <div className="cart-summary-item">
+            <Link to={`/merch-details/${item.id}`}>
+              {`${item.quantity} x `}<img className="cart-summary-item-image" src={item.img} alt={`${item.img} Unavailable`} />
+            </Link>
+          </div>
+        );
       })}
       <span>line</span>
       <div className="cart-summary-menu-total">{cart.total}</div>

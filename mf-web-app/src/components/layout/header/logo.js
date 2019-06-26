@@ -1,6 +1,6 @@
 
 import React from 'react';
-import MerchForceLogo from '../../static';
+import MerchForceLogo from './../../../static/merchforcelogo.png';
 
 export const Logo = ({ CustomerLogo }) => {
 
@@ -11,5 +11,4 @@ export const Logo = ({ CustomerLogo }) => {
       <MerchForceLogo />
     </div>
   )
-
 }

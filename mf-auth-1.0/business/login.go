@@ -12,11 +12,6 @@ import (
 	"github.com/kvmac/merchforce-cms/mf-auth/models"
 )
 
-var users = map[string]string {
-	"user1": "password1",
-	"user2": "password2",
-}
-
 
 func Login(creds models.Credentials) (*models.User, *http.Cookie, int) {
 	//PROD

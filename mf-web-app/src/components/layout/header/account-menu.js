@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { NavLink } from 'react-router';
+import { NavLink } from 'react-router-dom';
 
 export function AccountMenu({ auth, first, last }) {
   let fullName = `${first} ${last}`;
@@ -12,7 +12,7 @@ export function AccountMenu({ auth, first, last }) {
 
   return(
     <div className="account-menu">
-      <div>profile icon</div>
+      <div onClick={toggleMenu}>profile icon</div>
       <popover>
         <div className="customer-name">{fullName}</div>
         <span>line</span>

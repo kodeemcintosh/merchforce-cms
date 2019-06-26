@@ -1,6 +1,5 @@
 
 import React, { useState } from 'react';
-import ReactDOM from 'react-dom';
 import { Modal } from './modal';
 
 export function ImageViewer({ images, isViewerOpen, closeViewer }) {
@@ -26,7 +25,7 @@ export function ImageViewer({ images, isViewerOpen, closeViewer }) {
       >
       <div className="image-viewer">
         <div className="primary-image">
-          <Img src={primaryImage.src} />
+          <img src={primaryImage.src} alt={primaryImage.src} />
         </div>
         <div className="secondary-images">
           {images.map((img) => {

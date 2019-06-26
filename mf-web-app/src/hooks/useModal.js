@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import { useState } from 'react';
 
 export function useModal() {
   const [ modalStatus, setModalStatus ] = useState(false);

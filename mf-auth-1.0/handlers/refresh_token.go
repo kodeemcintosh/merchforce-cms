@@ -12,6 +12,7 @@ import (
 	"github.com/kvmac/merchforce-cms/mf-auth/business"
 )
 
+
 func RefreshToken(w http.ResponseWriter, req *http.Request) {
 
 	// We can obtain the session token from the requests cookies, which come with every request

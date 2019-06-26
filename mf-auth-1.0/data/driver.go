@@ -6,11 +6,10 @@ import (
 	"os"
 	"context"
 	"time"
-	// "github.com/kvmac/Doggo/utils"
+
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
-
 
 	"github.com/kvmac/merchforce-cms/mf-auth/models"
 )
@@ -18,11 +17,19 @@ import (
 type Key string
 
 const (
-	hostKey     = Key("hostKey")
-	usernameKey = Key("usernameKey")
-	passwordKey = Key("passwordKey")
-	databaseKey = Key("databaseKey")
+	hostKey     = Key("localhost:27017")
+	usernameKey = Key("MF_AUTH_USER")
+	passwordKey = Key("W%zb(2]PfGk,*8XB")
+	databaseKey = Key("mf_auth_db")
+	// hostKey     = Key("hostKey")
+	// usernameKey = Key("usernameKey")
+	// passwordKey = Key("passwordKey")
+	// databaseKey = Key("databaseKey")
 )
+//host = localhost:27017
+//username = MF_AUTH_USER
+//password = W%zb(2]PfGk,*8XB
+//database = mf_auth_db
 
 
 type Db struct {
@@ -30,13 +37,6 @@ type Db struct {
 	*mongo.Database
 }
 
-// type Config struct {
-// 	Host		string
-// 	Port		string
-// 	User		string
-// 	Pswd		string
-// 	DbName	string
-// }
 
 func (d *Db) GetContext() {
 	ctx := context.WithTimeout(context.Background(), 10 * time.Second)
@@ -50,6 +50,7 @@ func (d *Db) GetContext() {
 
 	*d.Context = ctx
 }
+
 
 func (db *Db) Connect() {
 	ctx := *db.Context

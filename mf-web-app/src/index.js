@@ -3,24 +3,22 @@ import ReactDOM from 'react-dom';
 import { BrowserRouter } from 'react-router-dom';
 import './index.css';
 import App from './App';
-import config from './app.config';
 import { Security } from '@okta/okta-react';
 import * as serviceWorker from './serviceWorker';
+import useOkta from './hooks/useOkta';
 
-const oktaConfig = {
-  issuer: `${process.env.OKTA_DOMAIN}/oauth2/default`,
-  redirect_uri: `${window.location.origin}/implicit/callback`,
-  client_id: process.env.OKTA_CLIENT_ID,
-  onAuthRequired: onAuthRequired,
-}
+// const config = {
+//   url: process.env.OKTA_DOMAIN,
+//   issuer: `${process.env.OKTA_DOMAIN}/oauth2/default`,
+//   redirect_uri: `${window.location.origin}/implicit/callback`,
+//   client_id: process.env.OKTA_CLIENT_ID,
+// }
+const { config } = useOkta();
 
-function onAuthRequired({ history }) {
-  history.push('/login');
-}
 
 ReactDOM.render(
   <BrowserRouter>
-    <Security {...oktaConfig}>
+    <Security {...config}>
       <App />
     </Security>
   </BrowserRouter>, document.getElementById('root'));

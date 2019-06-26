@@ -1,49 +1,68 @@
 import React, { useEffect, useState } from 'react';
-import { useStore } from '../../../hooks/useStore';
-import { withAuth } from '@okta/okta-react';
+// import { useStore } from '../../../hooks/useStore';
+import useAuth from '../../../hooks/useOkta';
+// import { withAuth } from '@okta/okta-react';
+import axios from 'axios';
 
-export default withAuth(function MerchList({ auth }) {
+export default function MerchList() {
   const [ isLoading, setIsLoading ] = useState(false);
   const [ merch, setMerch ] = useState([])
   const [ pageNumber, setPageNumber ] = useState(0)
+  const { auth } = useAuth();
 
-  useEffect(async () => {
-    try {
-      setIsLoading(true);
+  useEffect(() => {
+    async function getMerch() {
       let params = {
         pageNumber,
-      }
-
-      let accessToken = await auth.getAccessToken();
+      };
+      let accessToken = auth.getAccessToken();
 
       let response = await axios.GET('/merch', {headers: {
         Authorization: `Bearer ${accessToken}`
-        }}, params);
+        }}, params)
+        .then((res) => JSON.parse(res));
+
+      setMerch(response.body.merch);
+    }
+
+    try {
+      setIsLoading(true);
+
+
+      getMerch();
       // response = JSON.parse(response.body);
 
-      setMerch(response.merch);
       setIsLoading(false);
-
-      console.log('merchList:  ', merchList);
     } catch(err) {
       console.warn(err);
     }
-  }, [pageNumber]);
+  }, [auth, pageNumber]);
+  
+  const handlePagination = (next) => setPageNumber(pageNumber + next)
 
+  if(isLoading) {
+    return (
+      <div>LOADING</div>
+    )
+  }
 
   return(
     <div className="merch-list">
       {merch.map((item) => {
         return (
           <div className="merch-item">
-            <img className="primary-image" src={item.defaultImage} />
+            <img className="primary-image" src={item.defaultImage} alt={item.defaultImage} />
             {item.colors.map((color) => {
-              
-
+              return (
+                <div className="secondary-image-container"><img className="secondary-image" src={color.img} alt={color.img} /></div>
+              );
             })}
           </div>
         )
       })}
+
+      <div onClick={() => handlePagination(-1)}>previousPage</div>
+      <div onClick={() => handlePagination(1)}>nextPage</div>
     </div>
   );
-});
+};
