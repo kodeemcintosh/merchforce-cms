@@ -5,24 +5,8 @@ import './index.css';
 import App from './App';
 import { Security } from '@okta/okta-react';
 import * as serviceWorker from './serviceWorker';
+// import { oktaConfig } from './auth/Okta';
 import { oktaConfig } from './auth/Okta';
-
-// export const oktaConfig = {
-//   // url: process.env.OKTA_DOMAIN,
-//   // issuer: `${process.env.OKTA_DOMAIN}/oauth2/default`,
-//   // redirect_uri: `${window.location.origin}/implicit/callback`,
-//   // client_id: process.env.OKTA_CLIENT_ID,
-//   // url: 'https://dev-612778.okta.com',
-//   issuer: 'https://dev-612778.okta.com/oauth2/default',
-//   redirect_uri: 'https://practical-panini-9e5a68.netlify.com/callback/login',
-//   // redirectUri: 'http://localhost:8080/implicit/callback',
-//   client_id: '0oarosrzbPITpCtHs356',
-//   tokenManager: {
-//     secure: true
-//     // storage: 'sessionStorage'
-//   },
-//   onAuthRequired: ({ history }) => history.push('/login'),
-// }
 
 ReactDOM.render(
   <BrowserRouter>

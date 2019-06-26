@@ -1,43 +1,39 @@
 import { useMemo } from 'react';
-// import { useStore } from '../../../../hooks/useStore';
 // import { oktaConfig } from '../index';
 import OktaAuth from '@okta/okta-auth-js';
 
-class Okta {
-  constructor() {
-  }
-  config = {
-    // url: process.env.OKTA_DOMAIN,
-    // issuer: `${process.env.OKTA_DOMAIN}/oauth2/default`,
-    // redirect_uri: `${window.location.origin}/implicit/callback`,
-    // client_id: process.env.OKTA_CLIENT_ID,
-    // url: 'https://dev-612778.okta.com',
-    issuer: 'https://dev-612778.okta.com/oauth2/default',
-    redirect_uri: 'https://practical-panini-9e5a68.netlify.com/callback/login',
-    // redirectUri: 'http://localhost:8080/implicit/callback',
-    client_id: '0oarosrzbPITpCtHs356',
-    tokenManager: {
-      secure: true
-      // storage: 'sessionStorage'
-    },
-    onAuthRequired: ({ history }) => history.push('/login'),
-  }
+const oktaConfig = {
+  url: 'https://dev-612778.okta.com',
+  // url: process.env.OKTA_DOMAIN,
 
-  okta = new OktaAuth(this.config);
-  // oktaAuth = useMemo(() => new OktaAuth(oktaConfig), [oktaConfig]);
-    
-    // useEffect(() => {})
+  issuer: 'https://dev-612778.okta.com/oauth2/default',
+  // issuer: `${process.env.OKTA_DOMAIN}/oauth2/default`,
 
- signIn = async (username, password) => {
-    return await this.okta.signIn({
-      username,
-      password
-    })
-    .then((res) => JSON.parse(res));
-  };
+  redirect_uri: 'http://localhost:3000/',
+  // redirect_uri: 'https://practical-panini-9e5a68.netlify.com/callback',
+  // redirect_uri: `${process.env.MERCHFORCE_BASE}/callback`,
+  // redirectUri: 'http://localhost:8080/implicit/callback',
+
+  client_id: '0oarosrzbPITpCtHs356',
+  // client_id: process.env.OKTA_CLIENT_ID,
+
+  tokenManager: {
+    secure: true
+    // storage: 'sessionStorage'
+  },
+  onAuthRequired: ({ history }) => history.push('/login'),
+}
+export { oktaConfig };
+
+
+// okta factory function
+export function Okta() {
+  return new OktaAuth(oktaConfig);
 };
 
 export default Okta;
 
-const oktaConfig = new Okta().config;
-export { oktaConfig };
+// const { config } = Okta();
+// export { config };
+// const oktaConfig = new Okta().config;
+// export { oktaConfig };
