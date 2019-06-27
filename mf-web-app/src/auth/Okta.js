@@ -9,7 +9,7 @@ const oktaConfig = {
   issuer: 'https://dev-612778.okta.com/oauth2/default',
   // issuer: `${process.env.OKTA_DOMAIN}/oauth2/default`,
 
-  redirect_uri: 'http://localhost:3000/',
+  redirect_uri: 'http://localhost:3000/implicit/callback',
   // redirect_uri: 'https://practical-panini-9e5a68.netlify.com/callback',
   // redirect_uri: `${process.env.MERCHFORCE_BASE}/callback`,
   // redirectUri: 'http://localhost:8080/implicit/callback',

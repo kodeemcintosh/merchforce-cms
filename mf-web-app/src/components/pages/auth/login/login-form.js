@@ -7,7 +7,7 @@ import Okta from '../../../../auth/Okta';
 
 // const okta = new Okta();
 
-export default withAuth(function LoginForm({ auth }) {
+export default function LoginForm({ auth }) {
   // const [ store, setStore ] = useStore();
   const [ emailInput, setEmailInput ] = useState('kodee.mcintosh');
   const [ passwordInput, setPasswordInput ] = useState('pNyn8_5E');
@@ -47,7 +47,7 @@ export default withAuth(function LoginForm({ auth }) {
   }
 
   if(sessionToken) {
-    // auth.redirect({ sessionToken: sessionToken });
+    auth.redirect({ sessionToken: sessionToken });
     return null;
   }
 
@@ -71,4 +71,4 @@ export default withAuth(function LoginForm({ auth }) {
       <Link to="/reset-password">forgot password?</Link>
     </div>
   );
-});
+};

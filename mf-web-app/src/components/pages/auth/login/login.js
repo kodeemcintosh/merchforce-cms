@@ -8,19 +8,15 @@ import LoginForm from './login-form';
 export default withAuth(function Login({ auth }) {
   const [ isAuthenticated, setIsAuthenticated ] = useState(null);
 
-  const checkAuthentication = async () => {
-    const authenticated = await auth.isAuthenticated();
+
+  useEffect(() => {
+    const authenticated = auth.isAuthenticated();
+    console.log('login.js isAuthenticated', authenticated);
 
     if (authenticated !== isAuthenticated) {
       setIsAuthenticated(authenticated);
     }
-  }
+  }, [auth])
 
-  useEffect(() => {
-    checkAuthentication();
-  })
-
-  if (isAuthenticated === null) return null;
-
-  return isAuthenticated ? <Redirect to={{ pathname: '/featured' }} /> : <LoginForm />
+  return isAuthenticated ? <Redirect to='/' /> : <LoginForm auth={auth} />
 });

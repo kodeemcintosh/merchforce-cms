@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import OktaAuth from '@okta/okta-auth-js';
 
-export function ResetPassword({ match }) {
+export default function ResetPassword({ match }) {
   // const [ newPassword, setNewPassword ] = useState();
   // const [ newPasswordAgain, setNewPasswordAgain ] = useState();
   // const [ hasMatchingPassword, setHasMatchingPassword ] = useState(true);

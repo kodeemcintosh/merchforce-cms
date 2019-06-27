@@ -3,34 +3,36 @@ import { useModal } from '../../../hooks/useModal';
 import { ImageViewer } from '../../shared/image-viewer';
 import { withAuth } from '@okta/okta-react';
 import Okta from '../../../auth/Okta';
+import getMerchDetails from '../../../effects/api/get-merch-details';
 import axios from 'axios';
 
-export default withAuth(function MerchDetails({ auth, match }) {
+export default function MerchDetails({ match }) {
   const [ modalStatus, toggleModal ] = useModal();
   const [ merchDetails, setMerchDetails ] = useState(null);
   const [ isLoading, setIsLoading ] = useState(false);
   let okta = new Okta();
 
-  let merchId = match.params.merchId;
 
   useEffect(() => {
-    const getMerch = async () => {
-      const accessToken = await auth.getAccessToken();
+    let merchId = match.params.merchId;
+    // const getMerch = async () => {
+    //   const accessToken = await auth.getAccessToken();
 
-      return await axios.GET(`/merch/${merchId}`, {headers: {
-        Authorization: `Bearer ${accessToken}`
-      }})
-      .then((res) => JSON.parse(res.body));
-    }
+    //   return await axios.GET(`/merch/${merchId}`, {headers: {
+    //     Authorization: `Bearer ${accessToken}`
+    //   }})
+    //   .then((res) => JSON.parse(res.body));
+    // }
 
     try {
       setIsLoading(true);
+      // let response = getMerchDetails(merchId);
 
       // const merchId = match.params.merchId;
 
-      let response = getMerch();
+      // let response = getMerch();
 
-      setMerchDetails(response.merch);
+      // setMerchDetails(response.merch);
 
       console.log('merchId:  ', merchId);
       setIsLoading(false);
@@ -38,8 +40,8 @@ export default withAuth(function MerchDetails({ auth, match }) {
       console.warn(err);
       setIsLoading(false);
     }
-  }, [auth, merchId]);
-  // }, [match.params.merchId]);
+  // }, [auth, merchId]);
+  }, [match.params.merchId]);
 
   if(isLoading) {
     return(
@@ -56,4 +58,4 @@ export default withAuth(function MerchDetails({ auth, match }) {
         {merchDetails}
     </div>
   );
-});
+}

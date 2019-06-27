@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 // import useStore from './../../../hooks/useStore';
 import { Link } from 'react-router-dom';
 
-export function CartMenu({ cart }) {
+export function CartMenu({ cartSummary }) {
 
   // const [ store, setStore ] = useStore();
 
@@ -20,7 +20,7 @@ export function CartMenu({ cart }) {
     <div className="cart-summary-menu">
       <div className="cart-summary-title" onClick={toggleMenu}>Shopping Icon</div>
       <span>line</span>
-      {cart.items.map((item) => {
+      {cartSummary.items.map((item) => {
         return (
           <div className="cart-summary-item">
             <Link to={`/merch-details/${item.id}`}>
@@ -30,7 +30,7 @@ export function CartMenu({ cart }) {
         );
       })}
       <span>line</span>
-      <div className="cart-summary-menu-total">{cart.total}</div>
+      <div className="cart-summary-menu-total">{cartSummary.total}</div>
     </div>
   );
 }
