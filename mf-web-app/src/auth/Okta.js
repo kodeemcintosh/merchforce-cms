@@ -33,6 +33,7 @@ export function Okta() {
 
 export default Okta;
 
+
 // const { config } = Okta();
 // export { config };
 // const oktaConfig = new Okta().config;

@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { Redirect } from 'react-router';
 // import useStore from '../../../../hooks/useStore';
-import OktaAuth from '@okta/okta-auth-js';
-import { withAuth } from '@okta/okta-react';
+// import OktaAuth from '@okta/okta-auth-js';
+// import { withAuth } from '@okta/okta-react';
 import Okta from '../../../../auth/Okta';
 
 // const okta = new Okta();
@@ -14,6 +15,8 @@ export default function LoginForm({ auth }) {
   const [ isLoading, setIsLoading ] = useState(false);
   const [ isInvalidLogin, setIsInvalidLogin ] = useState(false);
   const [ sessionToken, setSessionToken ] = useState(null);
+  const [ goToRegister, setGoToRegister ] = useState(false);
+  const [ goToResetPassword, setGoToResetPassword ] = useState(false);
 
   let okta = Okta();
 
@@ -59,6 +62,12 @@ export default function LoginForm({ auth }) {
     );
   }
 
+  const handleGoToResetPassword = () => setGoToResetPassword(true);
+  const handleGoToRegister = () => setGoToRegister(true);
+
+  if(goToRegister) return <Redirect to='/register' />;
+  if(goToResetPassword) return <Redirect to='/reset-password' />;
+
   return(
     <div className="login">
       <form onSubmit={handleLogin}>
@@ -67,8 +76,10 @@ export default function LoginForm({ auth }) {
         <input type="password" placeholder="password" value={passwordInput} onChange={handlePasswordInput}></input>
         <input id="login-submit" type="submit" value="Submit" />
       </form>
-      <Link to="/register">register</Link>
-      <Link to="/reset-password">forgot password?</Link>
+      {/* <Link to='/register'>Register</Link>
+      <Link to='/reset-password'>Forgot Password?</Link> */}
+      <button onClick={handleGoToRegister}>register</button>
+      <button onClick={handleGoToResetPassword}>forgot password?</button>
     </div>
   );
 };

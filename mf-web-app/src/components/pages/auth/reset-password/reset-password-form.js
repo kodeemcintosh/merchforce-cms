@@ -1,18 +1,18 @@
 
 import React, { useState } from 'react';
-import OktaAuth from '@okta/okta-auth-js';
+import Okta from '../../../../auth/Okta';
 
-export default function ResetPassword({ match }) {
+export default function ResetPasswordForm({ auth }) {
   // const [ newPassword, setNewPassword ] = useState();
   // const [ newPasswordAgain, setNewPasswordAgain ] = useState();
   // const [ hasMatchingPassword, setHasMatchingPassword ] = useState(true);
   // const [ isValidPassword, setIsValidPassword ] = useState(true);
-  const [ username, setUsername ] = useState('');
+  const [ username, setUsername ] = useState('kodee.mcintosh');
   const [ verification, setVerification ] = useState('');
 
-  const oktaAuth = new OktaAuth({ url: process.env.MERCHFORCE_BASE });
+  const okta = Okta();
 
-  const handleResetPasswordForm = () => {
+  const handleResetPasswordForm = async () => {
     try {
       // if(newPassword !== newPasswordAgain) {
       //   setHasMatchingPassword(false);
@@ -23,11 +23,12 @@ export default function ResetPassword({ match }) {
       //   return;
       // }
 
-      let username = match.params.username;
-      oktaAuth.forgotPassword({
+      // let username = match.params.username;
+      await okta.forgotPassword({
         username,
         factorType: verification
       })
+      // .then((res) => {auth.})
 
       // TODO: hit up the reset password api
       console.log('handle-reset-password-form');

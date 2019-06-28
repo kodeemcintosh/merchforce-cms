@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router';
-import OktaAuth from '@okta/okta-auth-js';
+import { Link } from 'react-router-dom';
+import Okta from '../../../../auth/Okta';
 import { withAuth } from '@okta/okta-react';
 import axios from 'axios';
 
-export default withAuth(function RegistrationForm({ auth }) {
-  const oktaAuth = new OktaAuth({ url: process.env.MERCHFORCE_BASE});
+export default function RegistrationForm({ auth }) {
+
+  const okta = new Okta();
   //user info
   const [ username, setUsername ] = useState('');
   const [ password, setPassword ] = useState('');
@@ -45,12 +46,24 @@ export default withAuth(function RegistrationForm({ auth }) {
   const handlePostalCode = (e) => setPostalCode(e.target.value);
   const handleCountry = (e) => setCountry(e.target.value);
 
-  const handleRegisterForm = () => {
-    e.preventDefault();
-    setIsLoading(true);
-    validatePassword();
 
-    axios.post('/register', {
+  useEffect(() => {
+    checkAuth();
+  }, []);
+
+  const checkAuth = async () => {
+    const tkn = await auth.getIdToken();
+    if (tkn) {
+      setSessionToken(tkn);
+    }
+  }
+
+  const handleRegisterForm = async (e) => {
+    await e.preventDefault();
+    await setIsLoading(true);
+    await validatePassword();
+
+    await axios.post('/register', {
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json'
@@ -77,8 +90,8 @@ export default withAuth(function RegistrationForm({ auth }) {
         }
       })
     }).then((user) => {
-      oktaAuth.signIn({
-        username: email,
+      okta.signIn({
+        username: username,
         password: password
       })
     }).then((res) => setSessionToken(res.sessionToken))
@@ -87,21 +100,10 @@ export default withAuth(function RegistrationForm({ auth }) {
     setIsLoading(false);
   }
 
-  const validatePassword = () => {
-    setIsValidPassword(password.length > 8);
-    setIsMatchingPassword(password === passwordAgain);
+  const validatePassword = async () => {
+    await setIsValidPassword(password.length > 8);
+    await setIsMatchingPassword(password === passwordAgain);
   }
-
-  const checkAuth = async () => {
-    const tkn = await auth.getIdToken();
-    if (tkn) {
-      setSessionToken(tkn);
-    }
-  }
-
-  useEffect(() => {
-    checkAuth();
-  })
 
   if(sessionToken) {
     auth.redirect({ sessionToken: sessionToken });
@@ -138,4 +140,4 @@ export default withAuth(function RegistrationForm({ auth }) {
       <Link to="/reset-password" />
     </div>
   );
-});
+}

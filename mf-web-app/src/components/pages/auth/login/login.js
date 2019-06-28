@@ -5,18 +5,28 @@ import { Redirect } from 'react-router';
 import { withAuth } from '@okta/okta-react';
 import LoginForm from './login-form';
 
-export default withAuth(function Login({ auth }) {
-  const [ isAuthenticated, setIsAuthenticated ] = useState(null);
+export default withAuth(class Login extends React.Component {
+  state = {
+    isAuthenticated: null
+  };
 
+  async componentDidMount() {
+    this.checkAuth();
+  }
 
-  useEffect(() => {
-    const authenticated = auth.isAuthenticated();
-    console.log('login.js isAuthenticated', authenticated);
+  checkAuth = async () => {
+    let { auth } = { ...this.props };
+    let { isAuthenticated } = { ...this.state };
 
-    if (authenticated !== isAuthenticated) {
-      setIsAuthenticated(authenticated);
+    const nextIsAuthenticated = await auth.isAuthenticated();
+
+    if (nextIsAuthenticated !== isAuthenticated) {
+
+      this.setState({ isAuthenticated: nextIsAuthenticated });
     }
-  }, [auth])
+  }
 
-  return isAuthenticated ? <Redirect to='/' /> : <LoginForm auth={auth} />
+  render() {
+    return this.state.isAuthenticated ? <Redirect to='/' /> : <LoginForm auth={this.props.auth} />
+  }
 });
