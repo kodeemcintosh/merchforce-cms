@@ -1,35 +1,34 @@
-import React from 'react';
-import { Redirect } from 'react-router';
-import { Link } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { withRouter } from 'react-router';
+// import { Link } from 'react-router-dom';
 import { withAuth } from '@okta/okta-react';
 import RegistrationForm from './registration-form';
 
-export default withAuth(class Register extends React.Component {
-  constructor(props) {
-    super(props);
+function Register({ auth, match }) {
+  const [ isAuthenticated, setIsAuthenticated ] = useState(null);
 
-    this.state = {
-      isAuthenticated: null
-    }
-  }
 
-  async componentDidMount() {
-    this.checkAuth();
-  }
+  useEffect(() => checkAuth, []);
 
-  checkAuth = async () => {
-    let { auth } = { ...this.props };
-    let { isAuthenticated } = { ...this.state };
+  const checkAuth = async () => {
 
     const nextIsAuthenticated = await auth.isAuthenticated();
 
     if (nextIsAuthenticated !== isAuthenticated) {
 
-      this.setState({ isAuthenticated: nextIsAuthenticated });
+      setIsAuthenticated(nextIsAuthenticated);
     }
   }
 
-  render() {
-    return this.state.isAuthenticated ? <Redirect to='/' /> : <RegistrationForm auth={this.props.auth} />;
-  }
-});
+
+
+  // render() {
+
+    // if(!this.state.isAuthenticated) return auth.login("/login");
+    if(isAuthenticated) match.history.push("/");
+
+  // return this.state.isAuthenticated ? <Redirect to='/' /> : <RegistrationForm auth={this.props.auth} />;
+  return <RegistrationForm auth={auth} />;
+};
+
+export default withRouter(withAuth(Register));

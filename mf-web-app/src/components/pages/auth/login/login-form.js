@@ -65,9 +65,6 @@ export default function LoginForm({ auth }) {
   const handleGoToResetPassword = () => setGoToResetPassword(true);
   const handleGoToRegister = () => setGoToRegister(true);
 
-  if(goToRegister) return <Redirect to='/register' />;
-  if(goToResetPassword) return <Redirect to='/reset-password' />;
-
   return(
     <div className="login">
       <form onSubmit={handleLogin}>
@@ -78,8 +75,8 @@ export default function LoginForm({ auth }) {
       </form>
       {/* <Link to='/register'>Register</Link>
       <Link to='/reset-password'>Forgot Password?</Link> */}
-      <button onClick={handleGoToRegister}>register</button>
-      <button onClick={handleGoToResetPassword}>forgot password?</button>
+        <Link to="/register">register</Link>
+        <Link to="/reset-password">forget password?</Link>
     </div>
   );
 };

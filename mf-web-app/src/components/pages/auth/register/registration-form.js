@@ -117,8 +117,8 @@ export default function RegistrationForm({ auth }) {
           <input placeholder="username" value={username} onChange={handleUsername} />
           {!isValidPassword ? <label>Password must be longer than 8 characters</label> : null}
           {!isMatchingPassword ? <label>Passwords must match</label> : null}
-          <input placeholder="password" value={password} onChange={handlePassword} />
-          <input placeholder="re-type password" value={passwordAgain} onChange={handlePasswordAgain} />
+          <input placeholder="password" type="password" value={password} onChange={handlePassword} />
+          <input placeholder="re-type password" type="password" value={passwordAgain} onChange={handlePasswordAgain} />
           <input placeholder="first name" value={firstName} onChange={handleFirstName} />
           <input placeholder="last name" value={lastName} onChange={handleLastName} />
           <input placeholder="email" value={email} onChange={handleEmail} />

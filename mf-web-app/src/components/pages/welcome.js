@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Redirect, withRouter } from 'react-router';
+import { Link } from 'react-router-dom';
 // import { useStore } from '../../../../hooks/useStore';
 // import OktaAuth from '@okta/okta-auth-js';
 import { withAuth } from '@okta/okta-react';
@@ -27,8 +28,8 @@ class Welcome extends React.Component {
   }
 
   // const login = async () => await auth.login("/login");
-  goToLogin = async () => await this.props.history.login('/login');
-  goToRegister = async () => await this.props.history.register('/register');
+  goToLogin = async () => await this.props.history.push('/login');
+  goToRegister = async () => await this.props.history.push('/register');
 
   handleLogout = async () => await this.props.auth.logout();
 
@@ -37,8 +38,8 @@ class Welcome extends React.Component {
     if(!this.state.isAuthenticated) {
       return (
         <div className="welcome">WELCOME
-          <button onClick={this.goToLogin}>login</button>
-          <button onClick={this.goToRegister}>register</button>
+        <Link to="/login">login</Link>
+        <Link to="/register">register</Link>
         </div>
       );
     }

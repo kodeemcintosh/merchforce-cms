@@ -4,7 +4,7 @@ import Okta from '../../../auth/Okta';
 import { withAuth } from '@okta/okta-react';
 import axios from 'axios';
 
-export default withAuth(function MerchList({ auth }) {
+function MerchList({ auth }) {
   const [ isLoading, setIsLoading ] = useState(false);
   const [ merch, setMerch ] = useState([])
   const [ pageNumber, setPageNumber ] = useState(0)
@@ -64,4 +64,6 @@ export default withAuth(function MerchList({ auth }) {
       <div onClick={() => handlePagination(1)}>nextPage</div>
     </div>
   );
-});
+};
+
+export default withAuth(MerchList);

@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from 'react';
+import { withRouter } from 'react-router';
+
 import { useModal } from '../../../hooks/useModal';
 import { ImageViewer } from '../../shared/image-viewer';
-import { withAuth } from '@okta/okta-react';
 import Okta from '../../../auth/Okta';
 import getMerchDetails from '../../../effects/api/get-merch-details';
 import axios from 'axios';
 
-export default function MerchDetails({ match }) {
+function MerchDetails({ match }) {
   const [ modalStatus, toggleModal ] = useModal();
   const [ merchDetails, setMerchDetails ] = useState(null);
   const [ isLoading, setIsLoading ] = useState(false);
@@ -59,3 +60,5 @@ export default function MerchDetails({ match }) {
     </div>
   );
 }
+
+export default withRouter(MerchDetails);

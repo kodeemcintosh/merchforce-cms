@@ -1,11 +1,30 @@
-import React from 'react';
-import { Redirect } from 'react-router';
+import React, { useState, useEffect } from 'react';
+import { withRouter } from 'react-router';
 import { withAuth } from '@okta/okta-react';
 
-import ResetPasswordForm from './reset-password';
+import ResetPasswordForm from './reset-password-form';
 
-const ResetPassword = ({ auth }) => {
+function ResetPassword({ auth, match }) {
+  const [ isAuthenticated, setIsAuthenticated ] = useState(null);
+
+
+  useEffect(() => checkAuth, []);
+
+  const checkAuth = async () => {
+
+    const nextIsAuthenticated = await auth.isAuthenticated();
+
+    if (nextIsAuthenticated !== isAuthenticated) {
+
+      setIsAuthenticated(nextIsAuthenticated);
+    }
+  }
+
+
+
+  if(isAuthenticated) match.history.push("/");
+
   return <ResetPasswordForm auth={auth} />
 };
 
-export default withAuth(ResetPassword);
+export default withRouter(withAuth(ResetPassword));

@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-// import { Link } from 'react-router';
 import logo from './../../../static/logo.svg';
 import { withAuth } from '@okta/okta-react';
 
