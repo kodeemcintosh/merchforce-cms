@@ -63,6 +63,15 @@ export default function RegistrationForm({ auth }) {
     await setIsLoading(true);
     await validatePassword();
 
+
+
+
+      // axios
+      //   .post("/.netlify/functions/register", payload)
+
+
+
+
     await axios.post('/register', {
       headers: {
         'Accept': 'application/json',
