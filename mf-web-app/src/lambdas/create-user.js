@@ -25,6 +25,8 @@ export async function handler(event, context, callback) {
 
         await user.addToGroup(group.id)
         .then(() => console.log('user added to group: ', group.name));
+
+        // await user.
       })
       .catch((err) => {
         console.warn('Error in CreateUser function: ', err);

@@ -14,16 +14,16 @@ export default function RegistrationForm({ auth }) {
   const [ firstName, setFirstName ] = useState('');
   const [ lastName, setLastName ] = useState('');
   const [ email, setEmail ] = useState('');
-  const [ secondaryEmail, setSecondaryEmail ] = useState('');
-  const [ phone, setPhone ] = useState('');
-  const [ employer, setEmployer ] = useState('');
+  const [ secondEmail, setSecondEmail ] = useState('');
+  const [ mobilePhone, setMobilePhone ] = useState('');
+  const [ organization, setOrganization ] = useState('');
   //shipping info
-  const [ street, setStreet ] = useState('');
+  const [ streetAddress, setStreetAddress ] = useState('');
   const [ aptSuite, setAptSuite ] = useState('');
   const [ city, setCity ] = useState('');
   const [ stateProvince, setStateProvince ] = useState('');
-  const [ postalCode, setPostalCode ] = useState('');
-  const [ country, setCountry ] = useState('');
+  const [ zipCode, setZipCode ] = useState('');
+  const [ countryCode, setCountryCode ] = useState('');
 
   const [ isLoading, setIsLoading ] = useState(false);
   const [ isValidPassword, setIsValidPassword ] = useState(false);
@@ -36,15 +36,15 @@ export default function RegistrationForm({ auth }) {
   const handleFirstName = (e) => setFirstName(e.target.value);
   const handleLastName = (e) => setLastName(e.target.value);
   const handleEmail = (e) => setEmail(e.target.value);
-  const handleSecondaryEmail = (e) => setSecondaryEmail(e.target.value);
-  const handlePhone = (e) => setPhone(e.target.value);
-  const handleEmployer = (e) => setEmployer(e.target.value);
-  const handleStreet = (e) => setStreet(e.target.value);
+  const handleSecondEmail = (e) => setSecondEmail(e.target.value);
+  const handleMobilePhone = (e) => setMobilePhone(e.target.value);
+  const handleOrganization = (e) => setOrganization(e.target.value);
+  const handleStreetAddress = (e) => setStreetAddress(e.target.value);
   const handleAptSuite = (e) => setAptSuite(e.target.value);
   const handleCity = (e) => setCity(e.target.value);
   const handleStateProvince = (e) => setStateProvince(e.target.value);
-  const handlePostalCode = (e) => setPostalCode(e.target.value);
-  const handleCountry = (e) => setCountry(e.target.value);
+  const handleZipCode = (e) => setZipCode(e.target.value);
+  const handleCountryCode = (e) => setCountryCode(e.target.value);
 
 
   useEffect(() => {
@@ -64,47 +64,73 @@ export default function RegistrationForm({ auth }) {
     await validatePassword();
 
 
+    const payload = {
+      profile : {
+        username,
+        // password,
+        firstName,
+        lastName,
+        email,
+        secondEmail,
+        mobilePhone,
+        organization,
 
-
-      // axios
-      //   .post("/.netlify/functions/register", payload)
-
-
-
-
-    await axios.post('/register', {
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json'
+        streetAddress,
+        aptSuite,
+        city,
+        stateProvince,
+        zipCode,
+        countryCode
       },
-      body: JSON.stringify({
-        user: {
-          verified: false,
-          username,
-          password,
-          firstName,
-          lastName,
-          email,
-          secondaryEmail,
-          phone,
-          employer
-        },
-        shipping: {
-          street,
-          aptSuite,
-          city,
-          stateProvince,
-          postalCode,
-          country
+      credentials : {
+        password: {
+          value: password
         }
-      })
-    }).then((user) => {
-      okta.signIn({
-        username: username,
-        password: password
-      })
-    }).then((res) => setSessionToken(res.sessionToken))
-    .catch((err) => console.log("Error in registration-form: ", err));
+      }
+    };
+
+    axios
+      .post("/.netlify/functions/create-user", JSON.stringify(payload))
+      .then((res) => console.log('create-user response:  ', res));
+
+
+
+    // await axios.post('/register', {
+    //   headers: {
+    //     'Accept': 'application/json',
+    //     'Content-Type': 'application/json'
+    //   },
+    //   body: JSON.stringify({
+    //     user: {
+    //       profile : {
+    //         username,
+    //         // password,
+    //         firstName,
+    //         lastName,
+    //         email,
+    //         secondEmail,
+    //         mobilePhone,
+    //         employer,
+
+    //         streetAddress,
+    //         aptSuite,
+    //         city,
+    //         stateProvince,
+    //         zipCode,
+    //         countryCode
+    //     },
+    //     creds : {
+    //       password: password
+    //     }
+    //   }
+    //   })
+    // }).then((user) => {
+    //   okta.signIn({
+    //     username: username,
+    //     password: password
+    //   })
+    // }).then((res) => setSessionToken(res.sessionToken))
+    // .catch((err) => console.log("Error in registration-form: ", err));
 
     setIsLoading(false);
   }
@@ -131,17 +157,17 @@ export default function RegistrationForm({ auth }) {
           <input placeholder="first name" value={firstName} onChange={handleFirstName} />
           <input placeholder="last name" value={lastName} onChange={handleLastName} />
           <input placeholder="email" value={email} onChange={handleEmail} />
-          <input placeholder="secondary email" value={secondaryEmail} onChange={handleSecondaryEmail} />
-          <input placeholder="phone" value={phone} onChange={handlePhone} />
-          <input placeholder="employer" value={employer} onChange={handleEmployer} />
+          <input placeholder="second email" value={secondEmail} onChange={handleSecondEmail} />
+          <input placeholder="mobilePhone" value={mobilePhone} onChange={handleMobilePhone} />
+          <input placeholder="organization" value={organization} onChange={handleOrganization} />
         </div>
         <div className="shipping-form">
-          <input placeholder="street" value={street} onChange={handleStreet} />
+          <input placeholder="street address" value={streetAddress} onChange={handleStreetAddress} />
           <input placeholder="apt/suite" value={aptSuite} onChange={handleAptSuite} />
           <input placeholder="city" value={city} onChange={handleCity} />
           <input placeholder="state/province" value={stateProvince} onChange={handleStateProvince} />
-          <input placeholder="postal code" value={postalCode} onChange={handlePostalCode} />
-          <input placeholder="country" value={country} onChange={handleCountry} />
+          <input placeholder="zip code" value={zipCode} onChange={handleZipCode} />
+          <input placeholder="country code" value={countryCode} onChange={handleCountryCode} />
         </div>
         <input id="register-submit" type="submit" value="Submit" />
       </form>

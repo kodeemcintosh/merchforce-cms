@@ -10,7 +10,7 @@ import Featured from './featured';
 import MerchList from './merch-list';
 import MerchDetails from './merch-details';
 import { Cart } from './cart';
-import { Contact } from './contact';
+import Contact from './contact';
 import { HowItWorks } from './how-it-works';
 
 
@@ -28,8 +28,6 @@ import { HowItWorks } from './how-it-works';
 // export { MerchList };
 // export { Account };
 
-
-import axios from 'axios';
 
 
 function Storefront({ match }) {
