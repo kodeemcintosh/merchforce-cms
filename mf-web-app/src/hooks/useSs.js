@@ -1,6 +1,6 @@
 import react, { useState, useEffect } from 'react';
 
-export function useSessionStorage(key, defaultValue) {
+export function useSs(key, defaultValue) {
   const [ state, setState ] = useState(async () => {
     let value;
     try {

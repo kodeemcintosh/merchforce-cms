@@ -13,12 +13,11 @@ export default withAuth(async function useUser({ auth }) {
   // }
   let accessToken = auth.getAccessToken();
 
-  await axios.GET(`/account/${auth.props.userId}`, {
+  await axios.GET(`/accounts/${auth.userId}`, {
     headers: {
       Authorization: `Bearer ${accessToken}`,
     }
   })
-  .then((res) => JSON.parse(res))
   .then((res) => setState(res.user))
 
 

@@ -1,14 +1,12 @@
 import React, { useState } from 'react';
 import { NavLink } from 'react-router-dom';
 
-export function AccountMenu({ auth, first, last }) {
-  let fullName = `${first} ${last}`;
+export function AccountMenu({ user }) {
 
   const [ isOpen, setIsOpen ] = useState(false);
 
   const toggleMenu = () => setIsOpen(!isOpen);
 
-  const logout = async () => auth.logout();
 
   return(
     <div className="account-menu">

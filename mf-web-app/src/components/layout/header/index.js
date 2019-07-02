@@ -17,37 +17,8 @@ export default withAuth(function Header({ auth }) {
     }
   });
 
-// export const Header = () => {
-  // const [ isAuthenticated, setIsAuthenticated ] = useState(false);
+  const logout = async () => auth.logout('/');
 
-  // const checkAuth = async () => {
-  //   const authenticated = await auth.isAuthenticated();
-
-  //   if(authenticated !== isAuthenticated) {
-  //     setIsAuthenticated(authenticated);
-  //   }
-  // }
-
-  useEffect(() => {
-  //   checkAuth();
-  })
-
-  // const getCart = async () => {
-  //   let cart = await axios.GET
-
-  // }
-
-  // if(isAuthenticated === null) {
-  //   <div className="header">
-  //     <div className="logo">
-  //       <Logo />
-  //     </div>
-  //     <div className="account-menu">
-  //       <Link to="/login">login</Link>
-  //       <Link to="/register">signup</Link>
-  //     </div>
-  //   </div>
-  // }
 
   return (
     <div className="header">
@@ -58,7 +29,7 @@ export default withAuth(function Header({ auth }) {
         <CartMenu cartSummary={cartSummary} />
       </div>
       <div className="account-menu">
-        <AccountMenu />
+        <AccountMenu logout={logout} />
       </div>
     </div>
   );

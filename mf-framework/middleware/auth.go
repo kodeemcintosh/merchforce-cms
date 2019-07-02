@@ -10,15 +10,15 @@ import (
 	// okta "github.com/okta/okta-sdk-golang"
 	okta "github.com/okta/okta-jwt-verifier-golang"
 )
-const ISSUER = "https://dev-1234.oktapreview.com/oauth2/default"
-const CLIENT_ID = ""
+const ISSUER = "https://dev-612778.okta.com/oauth2/default"
+const CLIENT_ID = "0oarosrzbPITpCtHs356"
 
 func OktaAuth(next http.Handler) http.Handler {
 	// os.Getenv("ISSUER")
 	// os.Getenv("CLIENT_ID")
 
 	claims := map[string]string{}
-	claims["aud"] = "api://default"
+	claims["aud"] = ISSUER
 	claims["cid"] = CLIENT_ID
 
 	jwtVerifierSetup := okta.JwtVerifier{
