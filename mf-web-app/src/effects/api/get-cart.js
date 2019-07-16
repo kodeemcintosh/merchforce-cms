@@ -8,14 +8,38 @@ const getCart = async ({ auth }) => {
 
   const accessToken = await auth.getAccessToken();
 
-  let response = await axios.get(`/cart/${user.id}`, {
-    headers: {
-      Authorization: `Bearer ${accessToken}`
-  }});
+  if(storedCart === '') {
+    let response = await axios.get(`/cart/${user.id}`, {
+      headers: {
+        Authorization: `Bearer ${accessToken}`
+    }});
 
-  setStoredCart(response.cart);
+    setStoredCart(response.cart);
+  }
+  
+  const filterCartToSummary = (cart) => {
+    let total = 0;
 
-  return response.cart;
+    let items = cart.items.map((item) => {
+      total += item.price.actual;
+
+      return {
+        id: item.id,
+        quantity: item.quantity,
+        img: item.img
+      };
+    });
+
+    return {
+      total,
+      items
+    }
+  };
+
+  console.log('get cart api', response.cart)
+
+  return [ storedCart ];
 };
+
 
 export default withAuth(getCart);

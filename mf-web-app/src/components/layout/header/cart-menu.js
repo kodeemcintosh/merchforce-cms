@@ -1,20 +1,38 @@
 
 import React, { useState, useEffect } from 'react';
-// import useStore from './../../../hooks/useStore';
 import { Link } from 'react-router-dom';
 
 export function CartMenu({ cartSummary }) {
 
-  // const [ store, setStore ] = useStore();
-
+  const [ cartSummary, setCartSummary ] = useState({});
   const [ isOpen, setIsOpen ] = useState(false);
-
-  // const cart = store.cart;
 
   const toggleMenu = () => setIsOpen(!isOpen);
 
-  useEffect();
+  useEffect(() => {
+    getCart()
+      .then((res) => setCartSummary(filterCartToSummary(res)));
 
+  }, []);
+
+  const filterCartToSummary = (cart) => {
+    let total = 0;
+
+    let items = cart.items.map((item) => {
+      total += item.price.actual;
+
+      return {
+        id: item.id,
+        quantity: item.quantity,
+        img: item.img
+      };
+    });
+
+    return {
+      total,
+      items
+    }
+  };
 
   return(
     <div className="cart-summary-menu">
