@@ -1,7 +1,8 @@
 
 import React, { useState, useEffect } from 'react';
-import image from '../../../static/logo.svg';
+import image from '../../../../static/logo.svg';
 import { Elements, StripeProvider } from 'react-stripe-elements';
+import getCart from '../../../../effects/api/get-cart';
 
 import CheckoutForm from './checkout-form';
 
@@ -13,8 +14,8 @@ export function Checkout() {
 
 
   useEffect(() => {
-    getCart()
-      .then((res) => setCart(res.body.cart));
+    // getCart()
+    //   .then((res) => setCart(res.body.cart));
 
   }, []);
 

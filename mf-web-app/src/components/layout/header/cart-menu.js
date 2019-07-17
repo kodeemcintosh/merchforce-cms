@@ -2,22 +2,25 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 
-export function CartMenu() {
-  cartSummary = {
-      items: [
-        { id: '123456', quantity: '2', img: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS0m0xuU6th1rTBcsSEO_buFnt_lr31NcjihYwHvzkGWDcqf_VEXQ'}
-      ],
-      total: 10.75
-  };
+import getCart from '../../../effects/api/get-cart';
 
-  const [ cartSummary, setCartSummary ] = useState({});
+export function CartMenu() {
+
+  const [ cartSummary, setCartSummary ] = useState(() => {
+    return {
+        items: [
+          { id: '123456', quantity: '2', img: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS0m0xuU6th1rTBcsSEO_buFnt_lr31NcjihYwHvzkGWDcqf_VEXQ'}
+        ],
+        total: 10.75
+    };
+  });
   const [ isOpen, setIsOpen ] = useState(false);
 
   const toggleMenu = () => setIsOpen(!isOpen);
 
   useEffect(() => {
-    getCart()
-      .then((res) => setCartSummary(filterCartToSummary(res)));
+    // getCart()
+    //   .then((res) => setCartSummary(filterCartToSummary(res)));
 
   }, []);
 

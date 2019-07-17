@@ -1,5 +1,5 @@
 const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
-const IntrinsicLambda = require('@intrinsic/lambda');
+// const IntrinsicLambda = require('@intrinsic/lambda');
 
 // body: {
 //   amount,
@@ -15,18 +15,24 @@ exports.handler = function(event, context, callback) {
     const charge = await stripe.charges.create({
       amount: body.amount,
       currency,
+      // receipt_email: body.email,
       source: body.source,
-      description: body.description
+      // description: body.description,
+      description: "Serverless Stripe test charge",
+      source: body.token
     });
 
     callback(null, {
       statusCode: 200,
-      body: charge
+      body: JSON.stringify({
+        message: 'Charge processed successfully!',
+        charge
+      })
     });
   } catch(err) {
     callback(null, {
       statusCode: err.statusCode,
-      body: err
+      body: JSON.stringify(err)
     })
   }
 }
