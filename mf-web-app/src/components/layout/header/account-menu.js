@@ -1,24 +1,27 @@
 import React, { useState } from 'react';
 import { NavLink } from 'react-router-dom';
+import Okta from '../../../auth/Okta';
 
 export function AccountMenu({ user }) {
 
-  const [ isOpen, setIsOpen ] = useState(false);
+  let okta = Okta();
 
-  const toggleMenu = () => setIsOpen(!isOpen);
+  // const [ isOpen, setIsOpen ] = useState(false);
 
+  // const toggleMenu = () => setIsOpen(!isOpen);
+
+  // const logout = async () => auth.logout();
+  const logout = () => okta.signOut();
 
   return(
     <div className="account-menu">
-      <div onClick={toggleMenu}>profile icon</div>
-      <popover>
+      {/* <div onClick={toggleMenu}>profile icon</div> */}
         <div className="customer-name">{fullName}</div>
         <span>line</span>
         <NavLink to="/account/profile" />
         <NavLink to="/account/contact" />
         <span>line</span>
-        <div className="logout-button" onClick={logout}>logout</div>
-      </popover>
+        <button className="logout-button" onClick={logout}>logout</button>
     </div>
   );
 }

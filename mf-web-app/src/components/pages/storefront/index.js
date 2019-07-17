@@ -1,21 +1,18 @@
-import React, { useState, useEffect } from 'react';
-import { Switch, Route, Redirect, withRouter } from 'react-router';
+import React from 'react';
+import { Switch, Route, withRouter } from 'react-router';
 
-import axios from 'axios';
-
-import { withAuth, SecureRoute } from '@okta/okta-react';
 import Header from '../../layout/header';
 import { Footer } from '../../layout/footer';
+import { withAuth, SecureRoute } from '@okta/okta-react';
 
 import Account from './account';
 import Featured from './featured';
 import MerchList from './merch-list';
 import MerchDetails from './merch-details';
 import { Cart } from './cart';
-import { Checkout } from './cart';
+import Checkout from './checkout';
 import Contact from './contact';
 import { HowItWorks } from './how-it-works';
-import { setupMaster } from 'cluster';
 
 
 function Storefront({ auth, match }) {

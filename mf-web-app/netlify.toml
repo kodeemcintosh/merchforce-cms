@@ -10,4 +10,7 @@
     OKTA_CLIENT_ID=5TWnASOwZdvo1TRiXIodqITidq93Owt6,
     MERCHFORCE_BASE=https://kvmac.merchforce.io,
     CUSTOMER_SUB_DOMAIN=kvmac
+    STRIPE_PUBLIC_KEY=pk_test_xBgSuBEsbjJ3xaqXjN9VgEiq00R3nH61N2
+    STRIPE_SECRET_KEY=sk_test_YQd43NqALaEn5IKpajlIwO8B00EAo5sfhy
+    STRIPE_CURRENCY=USD
   }

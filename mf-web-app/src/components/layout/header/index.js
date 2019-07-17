@@ -7,7 +7,7 @@ import { AccountMenu } from './account-menu';
 import axios from 'axios';
 
 
-export default withAuth(function Header({ auth }) {
+function Header({ auth }) {
 
   const logout = async () => auth.logout('/');
 
@@ -25,4 +25,6 @@ export default withAuth(function Header({ auth }) {
       </div>
     </div>
   );
-});
+};
+
+export default withAuth(Header);

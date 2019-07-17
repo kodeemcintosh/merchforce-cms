@@ -6,18 +6,17 @@ const okta = new OktaNode({
 });
 
 export async function handler(event, context, callback) {
+  let body = await JSON.parse(event.body);
+
+  // TODO: update this so that merchforce can create admin users
+  let group = {
+    id: 1111,
+    name: 'basic'
+  };
+
+  const newUser = body.user;
+
   try {
-    let body = await JSON.parse(event.body);
-
-
-    // TODO: update this so that merchforce can create admin users
-    let group = {
-      id: 1111,
-      name: 'basic'
-    };
-
-
-    const newUser = body.user;
 
     let response = await okta.createUser(newUser)
       .then((user) => {
